@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name='csrf_token' content='<%= Plug.CSRFProtection.get_csrf_token %>'>
+    <%= if Guardian.Plug.current_token(@conn) do %>
+      <meta name='guardian_token' content="<%= Guardian.Plug.current_token(@conn) %>">
+    <% end %>
+
+    <title>Hello Phoenix!</title>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <div class="container" role="main">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <%= if Guardian.Plug.current_resource(@conn) do %>
+            <li><%= Guardian.Plug.current_resource(@conn).email %></li>
+            <li><%= link("Logout", to: logout_path(@conn, :delete), method: :delete) %></li>
+          <% else %>
+            <li><%= link("Signup", to: user_path(@conn, :new)) %></li>
+            <li><%= link("Login", to: login_path(@conn, :create)) %></li>
+          <% end %>
+        </ul>
+        <span class="logo"></span>
+      </div>
+
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+      <%= @inner %>
+
+    </div> <!-- /container -->
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>require("web/static/js/app")</script>
+
+    <hr>
+    <br>
+    <div class='panel panel-default col-sm-6' id='guardian-data'>
+      <div class='panel-heading'><h4>Guardian Data</h4></div>
+      <dl class='dl-horizontal'>
+        <dt>Claims</dt>
+        <dd><%= inspect(Guardian.Plug.claims(@conn)) %></dd>
+        <dt>Token</dt>
+        <dd><%= inspect(Guardian.Plug.current_token(@conn)) %></dd>
+        <dt>Resource</dt>
+        <dd><%= inspect(Guardian.Plug.current_resource(@conn)) %></dd>
+      </dl>
+    </div>
+
+    <div class='panel panel-default col-sm-6'>
+      <div class='panel-heading'><h4>Pings</h4></div>
+      <ul class='list-unstyled' id='ping-output'></ul>
+      </dl>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+<h2>Login</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: login_path(@conn, :create) %>
+
