@@ -19,7 +19,7 @@ defmodule PhoenixGuardian.SessionController do
       if changeset.valid? do
         conn
         |> put_flash(:info, "Logged in.")
-        |> Guardian.Plug.sign_in(user, :csrf)
+        |> Guardian.Plug.sign_in(user, :csrf, perms: %{ default: Guardian.Permissions.max })
         |> redirect(to: user_path(conn, :index))
       else
         render(conn, "new.html", changeset: changeset)
@@ -31,7 +31,7 @@ defmodule PhoenixGuardian.SessionController do
   end
 
   def delete(conn, _params) do
-    Guardian.Plug.logout(conn)
+    Guardian.Plug.sign_out(conn)
     |> put_flash(:info, "Logged out successfully.")
     |> redirect(to: "/")
   end
@@ -43,5 +43,11 @@ defmodule PhoenixGuardian.SessionController do
       { :error, reason } -> json(the_conn, %{ error: reason })
       _ -> json(the_conn, %{ error: "Login required" })
     end
+  end
+
+  def forbidden_api(conn, _) do
+    conn
+    |> put_status(403)
+    |> json(%{ error: :forbidden })
   end
 end

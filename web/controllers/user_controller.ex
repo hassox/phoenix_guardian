@@ -2,8 +2,10 @@ defmodule PhoenixGuardian.UserController do
   use PhoenixGuardian.Web, :controller
 
   alias PhoenixGuardian.User
+  alias PhoenixGuardian.SessionController
 
-  plug Guardian.Plug.EnsureSession, %{ on_failure: { PhoenixGuardian.SessionController, :new } } when not action in [:new, :create]
+  plug Guardian.Plug.EnsureSession, %{ on_failure: { SessionController, :new } } when not action in [:new, :create]
+  plug Guardian.Plug.EnsurePermissions, %{ on_failure: { __MODULE__, :forbidden }, default: [:write_profile] } when action in [:edit, :update]
 
   plug :scrub_params, "user" when action in [:create, :update]
   plug :action
@@ -26,7 +28,7 @@ defmodule PhoenixGuardian.UserController do
 
       conn
       |> put_flash(:info, "User created successfully.")
-      |> Guardian.Plug.sign_in(user, :csrf)
+      |> Guardian.Plug.sign_in(user, :csrf, perms: %{ default: Guardian.Permissions.max })
       |> redirect(to: user_path(conn, :index))
     else
       render(conn, "new.html", changeset: changeset)
@@ -65,6 +67,12 @@ defmodule PhoenixGuardian.UserController do
 
     conn
     |> put_flash(:info, "User deleted successfully.")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+  def forbidden(conn, _) do
+    conn
+    |> put_flash(:error, "Forbidden")
     |> redirect(to: user_path(conn, :index))
   end
 end

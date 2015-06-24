@@ -19,16 +19,17 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :joken,
-       secret_key: "lksjdflksjfowieruwoieruowier",
-       json_module: Guardian.JWT
+config :joken, config_module: Guardian.JWT
 
 config :guardian, Guardian,
       issuer: "MyApp",
       ttl: { 100_000, :days },
       verify_issuer: true,
       secret_key: "lksdjowiurowieurlkjsdlwwer",
-      serializer: PhoenixGuardian.GuardianSerializer
+      serializer: PhoenixGuardian.GuardianSerializer,
+      permissions: %{
+        default: [:read_profile, :write_profile]
+      }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
