@@ -27,6 +27,7 @@ config :guardian, Guardian,
       verify_issuer: true,
       secret_key: "lksdjowiurowieurlkjsdlwwer",
       serializer: PhoenixGuardian.GuardianSerializer,
+      hooks: PhoenixGuardian.GuardianHooks,
       permissions: %{
         default: [:read_profile, :write_profile]
       }
