@@ -15,7 +15,7 @@ defmodule PhoenixGuardian.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Guardian.Plug.VerifyAuthorization
+    plug Guardian.Plug.VerifyAuthorization, realm: "Bearer"
     plug Guardian.Plug.LoadResource
   end
 

@@ -25,7 +25,7 @@ config :guardian, Guardian,
       issuer: "MyApp",
       ttl: { 100_000, :days },
       verify_issuer: true,
-      secret_key: "lksdjowiurowieurlkjsdlwwer",
+      secret_key: "EPROIUELKJSDOIUEWORIJWLEKJFSODIojwoeirjsldkfjwoerijowkjflsef",
       serializer: PhoenixGuardian.GuardianSerializer,
       hooks: PhoenixGuardian.GuardianHooks,
       permissions: %{

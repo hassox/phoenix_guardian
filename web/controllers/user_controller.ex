@@ -28,7 +28,7 @@ defmodule PhoenixGuardian.UserController do
 
       conn
       |> put_flash(:info, "User created successfully.")
-      |> Guardian.Plug.sign_in(user, :csrf, perms: %{ default: Guardian.Permissions.max })
+      |> Guardian.Plug.sign_in(user, :token, perms: %{ default: Guardian.Permissions.max })
       |> redirect(to: user_path(conn, :index))
     else
       render(conn, "new.html", changeset: changeset)

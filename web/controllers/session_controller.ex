@@ -19,7 +19,7 @@ defmodule PhoenixGuardian.SessionController do
       if changeset.valid? do
         conn
         |> put_flash(:info, "Logged in.")
-        |> Guardian.Plug.sign_in(user, :csrf, perms: %{ default: Guardian.Permissions.max })
+        |> Guardian.Plug.sign_in(user, :token, perms: %{ default: Guardian.Permissions.max })
         |> redirect(to: user_path(conn, :index))
       else
         render(conn, "new.html", changeset: changeset)
