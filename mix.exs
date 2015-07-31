@@ -31,11 +31,11 @@ defmodule PhoenixGuardian.Mixfile do
   defp deps do
     [
       {:comeonin, "~>1.0.2"},
-      {:phoenix, "~> 0.13.1"},
-      {:phoenix_ecto, "~> 0.4"},
+      {:phoenix, "~> 0.15.0"},
+      {:phoenix_ecto, "~> 0.8"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 1.0"},
-      {:phoenix_live_reload, "~> 0.4", only: :dev},
+      {:phoenix_html, "~> 1.4"},
+      {:phoenix_live_reload, "~> 0.5", only: :dev},
       {:cowboy, "~> 1.0"},
       {:guardian, "~> 0.4.0"}
     ]
