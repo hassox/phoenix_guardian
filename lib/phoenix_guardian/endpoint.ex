@@ -1,6 +1,7 @@
 defmodule PhoenixGuardian.Endpoint do
   use Phoenix.Endpoint, otp_app: :phoenix_guardian
 
+  socket "/ws", PhoenixGuardian.UserSocket
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
@@ -12,6 +13,7 @@ defmodule PhoenixGuardian.Endpoint do
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
@@ -31,5 +33,5 @@ defmodule PhoenixGuardian.Endpoint do
     key: "_phoenix_guardian_key",
     signing_salt: "+9wo4wrQ"
 
-  plug :router, PhoenixGuardian.Router
+  plug PhoenixGuardian.Router
 end

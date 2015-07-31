@@ -7,8 +7,6 @@ defmodule PhoenixGuardian.Api.V1.UserController do
   plug Guardian.Plug.EnsureSession, on_failure: { SessionController, :unauthenticated_api }
   plug Guardian.Plug.EnsurePermissions, on_failure: { SessionController, :forbidden_api }, default: [:write_profile]
 
-  plug :action
-
   def index(conn, _params) do
     users = Repo.all(User)
     json(conn, %{ data: users, current_user: Guardian.Plug.current_resource(conn) })

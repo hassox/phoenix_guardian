@@ -15,4 +15,5 @@ config :phoenix_guardian, PhoenixGuardian.Repo,
   username: "postgres",
   password: "postgres",
   database: "phoenix_guardian_test",
+  pool: Ecto.Adapters.SQL.Sandbox,
   size: 1 # Use a single connection for transactional tests

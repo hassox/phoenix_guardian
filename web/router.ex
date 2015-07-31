@@ -43,8 +43,4 @@ defmodule PhoenixGuardian.Router do
   # scope "/api", PhoenixGuardian do
   #   pipe_through :api
   # end
-
-  socket "/ws", PhoenixGuardian do
-    channel "*", UsersChannel
-  end
 end

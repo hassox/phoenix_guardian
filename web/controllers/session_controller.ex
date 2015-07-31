@@ -5,7 +5,6 @@ defmodule PhoenixGuardian.SessionController do
   alias PhoenixGuardian.UserQuery
 
   plug :scrub_params, "user" when action in [:create]
-  plug :action
 
   def new(conn, params) do
     changeset = User.login_changeset(%User{})
