@@ -37,7 +37,7 @@ defmodule PhoenixGuardian.Mixfile do
       {:phoenix_html, "~> 1.0"},
       {:phoenix_live_reload, "~> 0.4", only: :dev},
       {:cowboy, "~> 1.0"},
-      {:guardian, "~> 0.4.0"}
+      {:guardian, "~> 0.5.0"},
     ]
   end
 end
