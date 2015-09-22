@@ -4,7 +4,7 @@ defmodule PhoenixGuardian.Api.V1.UserController do
   alias PhoenixGuardian.User
   alias PhoenixGuardian.SessionController
 
-  plug Guardian.Plug.EnsureSession, on_failure: { SessionController, :unauthenticated_api }
+  plug Guardian.Plug.EnsureAuthenticated, on_failure: { SessionController, :unauthenticated_api }
   plug Guardian.Plug.EnsurePermissions, on_failure: { SessionController, :forbidden_api }, default: [:write_profile]
 
   plug :action

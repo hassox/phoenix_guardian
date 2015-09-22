@@ -22,7 +22,7 @@ defmodule PhoenixGuardian.User do
 
   def create_changeset(model, params \\ :empty) do
     model
-    |> cast(params, ~w(name email password))
+    |> cast(params, ~w(name email password), ~w())
   end
 
   def update_changeset(model, params \\ :empty) do

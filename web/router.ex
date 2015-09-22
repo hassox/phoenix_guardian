@@ -6,6 +6,7 @@ defmodule PhoenixGuardian.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :browser_session do
@@ -15,7 +16,7 @@ defmodule PhoenixGuardian.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Guardian.Plug.VerifyAuthorization, realm: "Bearer"
+    plug Guardian.Plug.VerifyHeader
     plug Guardian.Plug.LoadResource
   end
 
@@ -36,15 +37,5 @@ defmodule PhoenixGuardian.Router do
     pipe_through [:api]
 
     resources "/users", UserController
-  end
-
-
-  # Other scopes may use custom stacks.
-  # scope "/api", PhoenixGuardian do
-  #   pipe_through :api
-  # end
-
-  socket "/ws", PhoenixGuardian do
-    channel "*", UsersChannel
   end
 end

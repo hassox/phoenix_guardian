@@ -4,11 +4,10 @@ defmodule PhoenixGuardian.UserController do
   alias PhoenixGuardian.User
   alias PhoenixGuardian.SessionController
 
-  plug Guardian.Plug.EnsureSession, %{ on_failure: { SessionController, :new } } when not action in [:new, :create]
+  plug Guardian.Plug.EnsureAuthenticated, %{ on_failure: { SessionController, :new } } when not action in [:new, :create]
   plug Guardian.Plug.EnsurePermissions, %{ on_failure: { __MODULE__, :forbidden }, default: [:write_profile] } when action in [:edit, :update]
 
   plug :scrub_params, "user" when action in [:create, :update]
-  plug :action
 
   def index(conn, _params) do
     users = Repo.all(User)
@@ -24,7 +23,7 @@ defmodule PhoenixGuardian.UserController do
     changeset = User.create_changeset(%User{}, user_params)
 
     if changeset.valid? do
-      user = Repo.insert(changeset)
+      user = Repo.insert!(changeset)
 
       conn
       |> put_flash(:info, "User created successfully.")
@@ -36,7 +35,7 @@ defmodule PhoenixGuardian.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Repo.get(User, id)
+    user = Repo.get!(User, id)
     render(conn, "show.html", user: user)
   end
 
