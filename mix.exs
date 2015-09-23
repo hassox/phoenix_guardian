@@ -30,14 +30,14 @@ defmodule PhoenixGuardian.Mixfile do
   # Type `mix help deps` for examples and options
   defp deps do
     [
-      {:comeonin, "~>1.0.2"},
-      {:phoenix, "~> 0.13.1"},
-      {:phoenix_ecto, "~> 0.4"},
+      {:comeonin, "~> 1.1.3"},
+      {:phoenix, "~> 1.0.2"},
+      {:phoenix_ecto, "~> 1.2.0"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 1.0"},
-      {:phoenix_live_reload, "~> 0.4", only: :dev},
+      {:phoenix_html, "~> 2.2.0"},
+      {:phoenix_live_reload, "~> 1.0.1", only: :dev},
       {:cowboy, "~> 1.0"},
-      {:guardian, "~> 0.5.0"},
+      {:guardian, "~> 0.6.2"},
     ]
   end
 end
