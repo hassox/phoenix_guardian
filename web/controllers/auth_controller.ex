@@ -26,7 +26,7 @@ defmodule PhoenixGuardian.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Signed in as #{user.name}")
-        |> Guardian.Plug.sign_in(user, :token)
+        |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
         |> redirect(to: private_page_path(conn, :index))
       {:error, _reason} ->
         conn

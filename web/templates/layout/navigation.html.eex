@@ -5,4 +5,7 @@
   <li role='presentation' class='<%= active_on_current(@conn, authorization_path(@conn, :index)) %>'>
     <%= link "Authorizations", to: authorization_path(@conn, :index) %>
   </li>
+  <li role='presentation' class='<%= active_on_current(@conn, token_path(@conn, :index)) %>'>
+    <%= link "Tokens", to: token_path(@conn, :index) %>
+  </li>
 </ul>

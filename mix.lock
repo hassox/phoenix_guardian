@@ -8,10 +8,11 @@
   "ecto": {:hex, :ecto, "1.1.0"},
   "fs": {:hex, :fs, "0.9.2"},
   "guardian": {:hex, :guardian, "0.8.0"},
+  "guardian_db": {:hex, :guardian_db, "0.3.0"},
   "hackney": {:hex, :hackney, "1.4.7"},
   "httpoison": {:hex, :httpoison, "0.8.0"},
   "idna": {:hex, :idna, "1.0.2"},
-  "jose": {:hex, :jose, "1.4.1"},
+  "jose": {:hex, :jose, "1.4.2"},
   "mimerl": {:hex, :mimerl, "1.0.2"},
   "mimetype_parser": {:hex, :mimetype_parser, "0.1.0"},
   "oauth2": {:hex, :oauth2, "0.5.0"},
@@ -29,4 +30,4 @@
   "ueberauth_github": {:hex, :ueberauth_github, "0.2.0"},
   "ueberauth_identity": {:hex, :ueberauth_identity, "0.2.1"},
   "ueberauth_slack": {:hex, :ueberauth_slack, "0.2.0"},
-  "uuid": {:hex, :uuid, "1.1.1"}}
+  "uuid": {:hex, :uuid, "1.1.2"}}

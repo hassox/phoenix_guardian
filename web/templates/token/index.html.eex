@@ -1,0 +1,30 @@
+<h1>Tokens</h1>
+<table class='table table-hover'>
+  <thead>
+    <tr>
+      <th>JTI</th>
+      <th>AUD</th>
+      <th>SUB</th>
+      <th>EXP</th>
+      <th>CLAIMS</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for token <- @tokens do %>
+      <tr class='<%= if @current_jti == token.jti, do: "alert alert-warning", else: ""%>'>
+        <td><%= token.jti %></td>
+        <td><%= token.aud %></td>
+        <td><%= token.sub %></td>
+        <td><%= token.exp %></td>
+        <td><pre><%= inspect(token.claims, pretty: true) %></pre></td>
+        <td>
+          <%= form_tag token_path(@conn, :delete, token.jti), method: :delete do %>
+            <button class='btn btn-danger'>Revoke</button>
+          <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</table>

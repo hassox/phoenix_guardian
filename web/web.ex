@@ -34,6 +34,7 @@ defmodule PhoenixGuardian.Web do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import PhoenixGuardian.Router.Helpers
+      import PhoenixGuardian.Controller.Helpers
     end
   end
 

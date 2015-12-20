@@ -29,7 +29,16 @@ config :guardian, Guardian,
   ttl: {30, :days},
   verify_issuer: true,
   serializer: PhoenixGuardian.GuardianSerializer,
-  secret_key: to_string(Mix.env)
+  secret_key: to_string(Mix.env),
+  hooks: GuardianDb,
+  permissions: %{
+    default: [
+      :read_profile,
+      :write_profile,
+      :read_token,
+      :revoke_token,
+    ],
+  }
 
 config :ueberauth, Ueberauth,
   providers: [
@@ -46,6 +55,10 @@ config :ueberauth, Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
 
+config :guardian_db, GuardianDb,
+       repo: PhoenixGuardian.Repo
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+

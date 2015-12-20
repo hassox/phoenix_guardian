@@ -33,10 +33,10 @@ defmodule PhoenixGuardian.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.1.0"},
      {:phoenix_ecto, "~> 2.0"},
-     {:postgrex, ">= 0.0.0"},
+     {:postgrex, ">= 0.0.0", override: true},
      {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:guardian, "~>0.8"},
+     {:guardian_db, "~>0.3.0"},
      {:ueberauth_github, "~>0.2.0"},
      {:ueberauth_identity, "~>0.2.1"},
      {:ueberauth_slack, "~>0.2.0"},
