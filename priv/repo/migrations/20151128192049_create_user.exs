@@ -11,7 +11,6 @@ defmodule PhoenixGuardian.Repo.Migrations.CreateUser do
       timestamps
     end
 
-    add index(:users, [:email], unique: true)
-
+    create index(:users, [:email], unique: true)
   end
 end

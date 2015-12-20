@@ -1,0 +1,3 @@
+<h1>This page requires authentication</h1>
+<h2>And you made it <%= @current_user.name %></h2>
+

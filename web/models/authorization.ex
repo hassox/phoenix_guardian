@@ -7,14 +7,16 @@ defmodule PhoenixGuardian.Authorization do
     field :token, :string
     field :refresh_token, :string
     field :expires_at, :integer
+    field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
 
     belongs_to :user, PhoenixGuardian.User
 
     timestamps
   end
 
-  @required_fields ~w(provider uid user_id)
-  @optional_fields ~w(token refresh_token expires_at)
+  @required_fields ~w(provider uid user_id token)
+  @optional_fields ~w(refresh_token expires_at)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

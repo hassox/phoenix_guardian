@@ -1,21 +1,25 @@
 defmodule PhoenixGuardian.AuthController do
+  @moduledoc """
+  Handles the Überauth integration.
+  This controller implements the request and callback phases for all providers.
+  The actual creation and lookup of users/authorizations is handled by UserFromAuth
+  """
   use PhoenixGuardian.Web, :controller
   use Guardian.Phoenix.Controller
 
   alias PhoenixGuardian.UserFromAuth
+  alias Ueberauth.Strategy.Helpers
 
-  require Ueberauth
+  plug Ueberauth
 
-  Ueberauth.plug("/auth")
-
-  def request(conn, _params, _current_user, _claims) do
-    conn
+  def login(conn, params, current_user, _claims) do
+    render conn, "login.html", current_user: current_user, current_auths: auths(current_user)
   end
 
-  def callback(%Plug.Conn{assigns: %{ueberauth_failure: fails}} = conn, _params, _current_user, _claims) do
+  def callback(%Plug.Conn{assigns: %{ueberauth_failure: fails}} = conn, _params, current_user, _claims) do
     conn
-    |> put_flash(:error, "Could not authenticate")
-    |> redirect(to: "/")
+    |> put_flash(:error, hd(fails.errors).message)
+    |> render("login.html", current_user: current_user, current_auths: auths(current_user))
   end
 
   def callback(%Plug.Conn{assigns: %{ueberauth_auth: auth}} = conn, _params, current_user, _claims) do
@@ -27,9 +31,8 @@ defmodule PhoenixGuardian.AuthController do
         |> redirect(to: "/")
       {:error, reason} ->
         conn
-        |> put_flash(:error, "Could not authenticate #{reason}")
-        |> Guardian.Plug.sign_out
-        |> redirect(to: "/")
+        |> put_flash(:error, "Could not authenticate")
+        |> render("login.html", current_user: current_user, current_auths: auths(current_user))
     end
   end
 
@@ -44,5 +47,12 @@ defmodule PhoenixGuardian.AuthController do
       |> put_flash(:info, "Not logged in")
       |> redirect(to: "/")
     end
+  end
+
+  defp auths(nil), do: []
+  defp auths(%PhoenixGuardian.User{} = user) do
+    Ecto.Model.assoc(user, :authorizations)
+      |> Repo.all
+      |> Enum.map(&(&1.provider))
   end
 end

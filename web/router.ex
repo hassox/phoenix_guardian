@@ -18,22 +18,32 @@ defmodule PhoenixGuardian.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :api_auth do
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
+  end
+
   scope "/", PhoenixGuardian do
     pipe_through [:browser, :browser_auth] # Use the default browser stack
 
     get "/", PageController, :index
+    get "/maybe-public", PageController, :maybe_public
+    get "/login", PageController, :login
+    delete "/logout", AuthController, :logout
 
     scope "/auth" do
-      get "/:identity", AuthController, :request
+      get "/:identity", AuthController, :login
       get "/:identity/callback", AuthController, :callback
       post "/:identity/callback", AuthController, :callback
     end
 
-    get "/logout", AuthController, :logout
+    resources "/users", UserController
+
+    get "/private", PrivatePageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PhoenixGuardian do
-  #   pipe_through :api
-  # end
+  scope "/api", PhoenixGuardian do
+    pipe_through [:api, :api_auth]
+  end
 end

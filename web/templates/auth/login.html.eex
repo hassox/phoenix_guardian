@@ -1,0 +1,48 @@
+<div class='col-xs-12 col-md-6 col-md-offset-3'>
+  <div class='panel panel-default'>
+    <div class='panel-heading'>
+      <%= if @current_user do %>
+        Connect your account
+      <% else %>
+        Login
+      <% end %>
+    </div>
+    <div class='panel-body'>
+      <%= if not Enum.member?(@current_auths, "github") do %>
+        <p>
+          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "github") %>">
+            <i class='fa fa-github'></i>
+            Github
+          </a>
+        </p>
+      <% end %>
+      <%= if not Enum.member?(@current_auths, "slack") do %>
+        <p>
+          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "slack") %>">
+            <i class='fa fa-slack'></i>
+            Slack
+          </a>
+        </p>
+      <% end %>
+      <%= if not Enum.member?(@current_auths, "identity") do %>
+        <hr>
+        <%= form_tag auth_path(@conn, :callback, "identity"), method: "post", class: "login" do %>
+          <div class='control-group'>
+            <label class='control-label' for='email-input'>Email</label>
+            <input class='form-control' type='email' name='email' value='<%= @conn.params["email"] %>' required/>
+          </div>
+
+          <div class='control-group'>
+            <label class='control-label' for='password-input'>Password</label>
+            <input class='form-control' type='password' name='password' required/>
+          </div>
+
+          <div class='control-group'>
+            <button class='btn btn-primary'>Login</button>
+          </div>
+        <% end %>
+        <p><%= link "Signup with your email", to: user_path(@conn, :new) %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

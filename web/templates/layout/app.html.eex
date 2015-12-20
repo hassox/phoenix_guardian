@@ -8,14 +8,15 @@
     <meta name="author" content="">
 
     <title>Hello Phoenix!</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
     <div class="container" role="main">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+        <ul class="nav nav-pills pull-right btn-group-xs">
+          <%= render "login_bar.html", current_user: @current_user, conn: @conn %>
         </ul>
         <span class="logo"></span>
       </div>
@@ -31,6 +32,7 @@
       <%= @inner %>
 
     </div> <!-- /container -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

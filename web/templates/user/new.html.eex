@@ -1,0 +1,26 @@
+<h1>Register</h1>
+<%= form_tag auth_path(@conn, :callback, "identity"), [method: "POST"] do %>
+  <div class='control-group'>
+    <label class='control-label' for='email-input'>Email</label>
+    <input type='email' name='email' required class='form-control'/>
+  </div>
+
+  <div class='control-group'>
+    <label class='control-label' for='name-input'>Name</label>
+    <input name='name' required class='form-control'/>
+  </div>
+
+  <div class='control-group'>
+    <label class='control-label' for='password-input'>Password</label>
+    <input type='password' name='password' required class='form-control'/>
+  </div>
+
+  <div class='control-group'>
+    <label class='control-label' for='password-confirmation-input'>Password</label>
+    <input type='password' name='password_confirmation' required class='form-control'/>
+  </div>
+
+  <div class='control-group'>
+    <button class='btn btn-primary'>Sign up</button>
+  </div>
+<% end %>

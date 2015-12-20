@@ -19,7 +19,8 @@ defmodule PhoenixGuardian.Mixfile do
   def application do
     [mod: {PhoenixGuardian, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :ueberauth_github, :ueberauth_identity, :oauth2]]
+                    :phoenix_ecto, :postgrex, :comeonin,
+                    :ueberauth_github, :ueberauth_identity, :ueberauth_slack, :oauth2]]
   end
 
   # Specifies which paths to compile per environment.
@@ -36,8 +37,10 @@ defmodule PhoenixGuardian.Mixfile do
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:guardian, "~>0.8"},
-     {:ueberauth_github, "~>0.1.3"},
-     {:ueberauth_identity, "~>0.1.3"},
+     {:ueberauth_github, "~>0.2.0"},
+     {:ueberauth_identity, "~>0.2.1"},
+     {:ueberauth_slack, "~>0.2.0"},
+     {:comeonin, "~> 1.6"},
      {:cowboy, "~> 1.0"}]
   end
 

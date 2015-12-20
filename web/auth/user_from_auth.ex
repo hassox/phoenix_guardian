@@ -4,8 +4,9 @@ defmodule PhoenixGuardian.UserFromAuth do
   alias Ueberauth.Auth
 
   def get_or_insert(auth, current_user, repo) do
-    case repo.get_by(Authorization, uid: auth.uid, provider: to_string(auth.provider)) do
-      nil -> register_user_from_auth(auth, current_user, repo)
+    case auth_and_validate(auth, repo) do
+      {:error, :not_found} -> register_user_from_auth(auth, current_user, repo)
+      {:error, reason} -> {:error, reason}
       authorization ->
         if authorization.expires_at && authorization.expires_at < Guardian.Utils.timestamp do
           replace_authorization(authorization, auth, current_user, repo)
@@ -17,9 +18,9 @@ defmodule PhoenixGuardian.UserFromAuth do
 
   # We need to check the pw for the identity provider
   defp validate_auth_for_registration(%Auth{provider: :identity} = auth) do
-    pw = Map.get(auth.credentials.other, "password")
-    pwc = Map.get(auth.credentials.other, "password_confirmation")
-    if pw == pwc, do: :ok, else: {:error, :password_confirmation_does_not_match}
+    pw = Map.get(auth.credentials.other, :password)
+    pwc = Map.get(auth.credentials.other, :password_confirmation)
+    if pw == nil or pw == "" or pw == pwc, do: :ok, else: {:error, :password_confirmation_does_not_match}
   end
 
   # All the other providers are oauth so should be good
@@ -85,16 +86,46 @@ defmodule PhoenixGuardian.UserFromAuth do
     end
   end
 
+  defp auth_and_validate(%{provider: :identity} = auth, repo) do
+    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+      nil -> {:error, :not_found}
+      authorization ->
+        case auth.credentials.other.password do
+          pass when is_binary(pass) ->
+            if Comeonin.Bcrypt.checkpw(auth.credentials.other.password, authorization.token) do
+              authorization
+            else
+              {:error, :password_does_not_match}
+            end
+          _ -> {:error, :password_required}
+        end
+    end
+  end
+
+  defp auth_and_validate(auth, repo) do
+    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+      nil -> {:error, :not_found}
+      authorization ->
+        if authorization.token == auth.credentials.token do
+          authorization
+        else
+          {:error, :token_mismatch}
+        end
+    end
+  end
+
   defp authorization_from_auth(user, auth, repo) do
     authorization = Ecto.Model.build(user, :authorizations)
     result = Authorization.changeset(
       authorization,
       %{
         provider: to_string(auth.provider),
-        uid: auth.uid,
-        token: auth.credentials.token,
+        uid: uid_from_auth(auth),
+        token: token_from_auth(auth),
         refresh_token: auth.credentials.refresh_token,
-        expires_at: auth.credentials.expires_at
+        expires_at: auth.credentials.expires_at,
+        password: password_from_auth(auth),
+        password_confirmation: password_confirmation_from_auth(auth)
       }
     ) |> repo.insert
 
@@ -113,4 +144,25 @@ defmodule PhoenixGuardian.UserFromAuth do
       |> Enum.join(" ")
     end
   end
+
+  defp token_from_auth(%{provider: :identity} = auth) do
+    case auth do
+      %{ credentials: %{ other: %{ password: pass } } } when not is_nil(pass) ->
+        Comeonin.Bcrypt.hashpwsalt(pass)
+      _ -> nil
+    end
+  end
+
+  defp token_from_auth(auth), do: auth.credentials.token
+
+  defp uid_from_auth(%{ provider: :slack } = auth), do: auth.credentials.other.user_id
+  defp uid_from_auth(auth), do: auth.uid
+
+  defp password_from_auth(%{provider: :identity} = auth), do: auth.credentials.other.password
+  defp password_from_auth(_), do: nil
+
+  defp password_confirmation_from_auth(%{provider: :identity} = auth) do
+    auth.credentials.other.password_confirmation
+  end
+  defp password_confirmation_from_auth(_), do: nil
 end
