@@ -19,10 +19,10 @@ To start your Phoenix app:
   2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   3. Start Phoenix endpoint with `mix phoenix.server`
   4. Export secrets for your Github and Slack application in your environment
-  ** ```GITHUB_CLIENT_ID```
-  ** ```GITHUB_CLIENT_SECRET```
-  ** ```SLACK_CLIENT_SECRET```
-  ** ```SLACK_CLIENT_SECRET```
+    * ```GITHUB_CLIENT_ID```
+    * ```GITHUB_CLIENT_SECRET```
+    * ```SLACK_CLIENT_SECRET```
+    * ```SLACK_CLIENT_SECRET```
 
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
