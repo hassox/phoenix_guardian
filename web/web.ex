@@ -48,6 +48,7 @@ defmodule PhoenixGuardian.Web do
       use Phoenix.HTML
 
       import PhoenixGuardian.Router.Helpers
+      import PhoenixGuardian.ViewHelpers
     end
   end
 

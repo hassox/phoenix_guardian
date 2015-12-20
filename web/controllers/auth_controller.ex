@@ -8,11 +8,10 @@ defmodule PhoenixGuardian.AuthController do
   use Guardian.Phoenix.Controller
 
   alias PhoenixGuardian.UserFromAuth
-  alias Ueberauth.Strategy.Helpers
 
   plug Ueberauth
 
-  def login(conn, params, current_user, _claims) do
+  def login(conn, _params, current_user, _claims) do
     render conn, "login.html", current_user: current_user, current_auths: auths(current_user)
   end
 
@@ -28,8 +27,8 @@ defmodule PhoenixGuardian.AuthController do
         conn
         |> put_flash(:info, "Signed in as #{user.name}")
         |> Guardian.Plug.sign_in(user, :token)
-        |> redirect(to: "/")
-      {:error, reason} ->
+        |> redirect(to: private_page_path(conn, :index))
+      {:error, _reason} ->
         conn
         |> put_flash(:error, "Could not authenticate")
         |> render("login.html", current_user: current_user, current_auths: auths(current_user))

@@ -38,6 +38,7 @@ defmodule PhoenixGuardian.Router do
     end
 
     resources "/users", UserController
+    resources "/authorizations", AuthorizationController
 
     get "/private", PrivatePageController, :index
   end

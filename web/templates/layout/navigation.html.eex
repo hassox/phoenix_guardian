@@ -1,0 +1,8 @@
+<ul class='nav nav-tabs'>
+  <li role='presentation' class='<%= active_on_current(@conn, private_page_path(@conn, :index)) %>'>
+    <%= link "Private", to: private_page_path(@conn, :index) %>
+  </li>
+  <li role='presentation' class='<%= active_on_current(@conn, authorization_path(@conn, :index)) %>'>
+    <%= link "Authorizations", to: authorization_path(@conn, :index) %>
+  </li>
+</ul>
