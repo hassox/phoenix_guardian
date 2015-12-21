@@ -31,17 +31,19 @@ defmodule PhoenixGuardian.Router do
     get "/login", PageController, :login
     delete "/logout", AuthController, :logout
 
-    scope "/auth" do
-      get "/:identity", AuthController, :login
-      get "/:identity/callback", AuthController, :callback
-      post "/:identity/callback", AuthController, :callback
-    end
-
     resources "/users", UserController
     resources "/authorizations", AuthorizationController
     resources "/tokens", TokenController
 
     get "/private", PrivatePageController, :index
+  end
+
+  scope "/auth", PhoenixGuardian do
+    pipe_through [:browser, :browser_auth] # Use the default browser stack
+
+    get "/:identity", AuthController, :login
+    get "/:identity/callback", AuthController, :callback
+    post "/:identity/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
