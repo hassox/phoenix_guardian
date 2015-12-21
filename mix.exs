@@ -17,10 +17,30 @@ defmodule PhoenixGuardian.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {PhoenixGuardian, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :comeonin,
-                    :ueberauth_github, :ueberauth_identity, :ueberauth_slack, :oauth2]]
+    [
+      mod: {PhoenixGuardian, []},
+      applications: applications(Mix.env)
+    ]
+  end
+
+  def applications(env) when env in [:test] do
+    applications(:default) ++ [:ex_machina]
+  end
+
+  def applications(_) do
+    [
+      :comeonin,
+      :cowboy,
+      :logger,
+      :oauth2,
+      :phoenix,
+      :phoenix_ecto,
+      :phoenix_html,
+      :postgrex,
+      :ueberauth_github,
+      :ueberauth_identity,
+      :ueberauth_slack,
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -31,7 +51,8 @@ defmodule PhoenixGuardian.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.0"},
+    [{:ex_machina, "~>0.6", only: [:dev, :test]},
+     {:phoenix, "~> 1.1.0"},
      {:phoenix_ecto, "~> 2.0"},
      {:postgrex, ">= 0.0.0", override: true},
      {:phoenix_html, "~> 2.3"},
