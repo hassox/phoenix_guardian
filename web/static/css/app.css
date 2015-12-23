@@ -78,3 +78,15 @@ form.link, form.button {
     border-bottom: 0;
   }
 }
+.impersonation-bar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 20px;
+  height: 20px;
+  z-index: 1000;
+}
+.impersonation-bar a {
+  width: 100%;
+}

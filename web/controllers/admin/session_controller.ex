@@ -8,6 +8,7 @@ defmodule PhoenixGuardian.Admin.SessionController do
   use PhoenixGuardian.Web, :admin_controller
 
   alias PhoenixGuardian.UserFromAuth
+  alias PhoenixGuardian.User
 
   # We still want to use Ueberauth for checking the passwords etc
   # we have everything we need to check email / passwords and oauth already
@@ -16,7 +17,11 @@ defmodule PhoenixGuardian.Admin.SessionController do
 
   # Make sure that we have a valid token in the :admin area of the session
   # We've aliased Guardian.Plug.EnsureAuthenticated in our PhoenixGuardian.Web.admin_controller macro
-  plug EnsureAuthenticated, [key: :admin, handler: __MODULE__] when action in [:delete]
+  plug EnsureAuthenticated, [key: :admin, handler: __MODULE__] when action in [:delete, :impersonate, :stop_impersonating]
+
+  # When we impersonate someone we need to log anyone who is currently there
+  # so we can correctly operate on them
+  plug Guardian.Plug.VerifySession when action in [:impersonate, :stop_impersonating]
 
   def new(conn, params, current_user, _claims) do
     render conn, "new.html", current_user: current_user
@@ -55,5 +60,19 @@ defmodule PhoenixGuardian.Admin.SessionController do
       |> Guardian.Plug.sign_out(:admin)
       |> put_flash(:info, "admin signed out")
       |> redirect(to: "/")
+  end
+
+  def impersonate(conn, params, current_user, _claims) do
+    user = Repo.get(User, params["user_id"])
+    conn
+    |> Guardian.Plug.sign_out(:default)
+    |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
+    |> redirect(to: "/")
+  end
+
+  def stop_impersonating(conn, params, current_user, _claims) do
+    conn
+    |> Guardian.Plug.sign_out(:default)
+    |> redirect(to: admin_user_path(conn, :index))
   end
 end

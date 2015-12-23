@@ -1,0 +1,9 @@
+<%= if admin_logged_in?(@conn) && logged_in?(@conn) do %>
+  <div class='impersonation-bar'>
+    <%= link "Stop impersonating #{current_user(@conn).name}",
+             to: admin_session_path(@conn, :stop_impersonating),
+             method: "DELETE",
+             class: "btn btn-xs btn-warning"
+    %>
+  </div>
+<% end %>

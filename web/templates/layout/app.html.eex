@@ -13,7 +13,8 @@
   </head>
 
   <body>
-    <div class="container" role="main">
+    <div class="fluid-container" role="main">
+      <%= render "impersonation.html", conn: @conn %>
       <div class="header">
         <ul class="nav nav-pills pull-right btn-group-xs">
           <%= render "login_bar.html", current_user: @current_user, conn: @conn %>

@@ -29,6 +29,10 @@ defmodule PhoenixGuardian.Router do
     plug Guardian.Plug.LoadResource, key: :admin
   end
 
+  pipeline :impersonation_browser_auth do
+    plug Guardian.Plug.VerifySession, key: :admin
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -42,7 +46,10 @@ defmodule PhoenixGuardian.Router do
   end
 
   scope "/", PhoenixGuardian do
-    pipe_through [:browser, :browser_auth] # Use the default browser stack
+    # We pipe this through the browser_auth to fetch logged in people
+    # We pipe this through the impersonation_browser_auth to know if we're impersonating
+    # We don't just pipe it through admin_browser_auth because that also loads the resource
+    pipe_through [:browser, :browser_auth, :impersonation_browser_auth]
 
     get "/", PageController, :index
     delete "/logout", AuthController, :logout
@@ -73,6 +80,8 @@ defmodule PhoenixGuardian.Router do
     post "/auth/:identity/callback", SessionController, :callback
     get "/logout", SessionController, :logout
     delete "/logout", SessionController, :logout, as: :logout
+    post "/impersonate/:user_id", SessionController, :impersonate, as: :impersonation
+    delete "/impersonate", SessionController, :stop_impersonating
 
     resources "/users", UserController
   end

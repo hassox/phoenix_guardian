@@ -21,7 +21,6 @@ defmodule PhoenixGuardian.AuthControllerTest do
   end
 
   test "DELETE /logout logs out the user and admin", context do
-
     conn = guardian_login(context.user, :token)
       |> guardian_login(context.admin, :token, key: :admin)
       |> get("/") # This get loads the info out of the session and puts it into the connection
