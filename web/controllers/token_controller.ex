@@ -1,6 +1,5 @@
 defmodule PhoenixGuardian.TokenController do
   use PhoenixGuardian.Web, :controller
-  use Guardian.Phoenix.Controller
 
   alias PhoenixGuardian.GuardianToken
   alias Guardian.Plug.EnsureAuthenticated

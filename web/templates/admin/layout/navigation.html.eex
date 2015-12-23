@@ -1,0 +1,5 @@
+<ul class='nav nav-tabs'>
+  <li role='presentation' class='<%= active_on_current(@conn, admin_user_path(@conn, :index)) %>'>
+    <%= link "Users", to: admin_user_path(@conn, :index) %>
+  </li>
+</ul>

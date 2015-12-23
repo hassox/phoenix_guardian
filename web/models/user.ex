@@ -1,9 +1,12 @@
 defmodule PhoenixGuardian.User do
   use PhoenixGuardian.Web, :model
 
+  alias PhoenixGuardian.Repo
+
   schema "users" do
     field :name, :string
     field :email, :string
+    field :is_admin, :boolean
 
     has_many :authorizations, PhoenixGuardian.Authorization
 
@@ -27,5 +30,11 @@ defmodule PhoenixGuardian.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def make_admin!(user) do
+    user
+    |> cast(%{is_admin: true}, ~w(), ~w(is_admin))
+    |> Repo.update!
   end
 end

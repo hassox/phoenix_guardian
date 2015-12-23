@@ -27,7 +27,8 @@ defmodule PhoenixGuardian.Factory do
     }
   end
 
-  def with_authorization(user) do
-    create(:authoirzation, user: user)
+  def with_authorization(user, opts \\ []) do
+    opts = opts ++ [user: user, uid: user.email]
+    create(:authorization, opts)
   end
 end

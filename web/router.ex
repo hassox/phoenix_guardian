@@ -9,15 +9,33 @@ defmodule PhoenixGuardian.Router do
     plug :put_secure_browser_headers
   end
 
+  # This plug will look for a Guardian token in the session in the default location
+  # Then it will attempt to load the resource found in the JWT.
+  # If it doesn't find a JWT in the default location it doesn't do anything
   pipeline :browser_auth do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
+  end
+
+  # This pipeline is created for use within the admin namespace.
+  # It looks for a valid token in the session - but in the 'admin' location of guardian
+  # This keeps the session credentials seperate for the main site, and the admin site
+  # It's very possible that a user is logged into the main site but not the admin
+  # or it could be that you're logged into both.
+  # This does not conflict with the browser_auth pipeline.
+  # If it doesn't find a JWT in the location it doesn't do anything
+  pipeline :admin_browser_auth do
+    plug Guardian.Plug.VerifySession, key: :admin
+    plug Guardian.Plug.LoadResource, key: :admin
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  # This pipeline if intended for API requests and looks for the JWT in the "Authorization" header
+  # In this case, it should be prefixed with "Bearer" so that it's looking for
+  # Authorization: Bearer <jwt>
   pipeline :api_auth do
     plug Guardian.Plug.VerifyHeader, realm: "Bearer"
     plug Guardian.Plug.LoadResource
@@ -27,8 +45,6 @@ defmodule PhoenixGuardian.Router do
     pipe_through [:browser, :browser_auth] # Use the default browser stack
 
     get "/", PageController, :index
-    get "/maybe-public", PageController, :maybe_public
-    get "/login", PageController, :login
     delete "/logout", AuthController, :logout
 
     resources "/users", UserController
@@ -38,12 +54,27 @@ defmodule PhoenixGuardian.Router do
     get "/private", PrivatePageController, :index
   end
 
+  # This scope is the main authentication area for Ueberauth
   scope "/auth", PhoenixGuardian do
     pipe_through [:browser, :browser_auth] # Use the default browser stack
 
     get "/:identity", AuthController, :login
     get "/:identity/callback", AuthController, :callback
     post "/:identity/callback", AuthController, :callback
+  end
+
+  # This scope is intended for admin users.
+  # Normal users can only go to the login page
+  scope "/admin", PhoenixGuardian.Admin, as: :admin do
+    pipe_through [:browser, :admin_browser_auth] # Use the default browser stack
+
+    get "/login", SessionController, :new, as: :login
+    get "/login/:identity", SessionController, :new
+    post "/auth/:identity/callback", SessionController, :callback
+    get "/logout", SessionController, :logout
+    delete "/logout", SessionController, :logout, as: :logout
+
+    resources "/users", UserController
   end
 
   # Other scopes may use custom stacks.
