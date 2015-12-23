@@ -18,15 +18,13 @@
         <ul class="nav nav-pills pull-right btn-group-xs">
           <%= render "login_bar.html", current_user: @current_user, conn: @conn %>
         </ul>
-        <span class="logo"></span>
+        <h1 class="logo">Phoenix Guardian</h1>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= if @current_user do %>
         <%= render "navigation.html", current_user: @current_user, conn: @conn %>
-      <% else %>
-        <p class="alert alert-warning" role="alert">Not logged in</p>
       <% end %>
 
       <%= render @view_module, @view_template, assigns %>
