@@ -26,6 +26,11 @@ To start your Phoenix app:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+To visit the admin site, after you've created a user you should flip the
+"is_admin" boolean on the users table in the database.
+
+Then visit [`localhost:4000/admin/users`](http://localhost:4000/admin/users)
+
 ## What to look for
 
 The site is broken into two broad parts
