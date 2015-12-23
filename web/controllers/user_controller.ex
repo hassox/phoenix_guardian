@@ -1,6 +1,5 @@
 defmodule PhoenixGuardian.UserController do
   use PhoenixGuardian.Web, :controller
-  use Guardian.Phoenix.Controller
 
   alias PhoenixGuardian.Repo
   alias PhoenixGuardian.User

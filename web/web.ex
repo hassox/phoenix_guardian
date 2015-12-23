@@ -25,11 +25,32 @@ defmodule PhoenixGuardian.Web do
     end
   end
 
+  def admin_controller do
+    quote do
+      use Phoenix.Controller, namespace: PhoenixGuardian.Admin
+      use Guardian.Phoenix.Controller, key: :admin
+
+      alias PhoenixGuardian.Repo
+      alias Guardian.Plug.EnsureAuthenticated
+      alias Guardian.Plug.EnsurePermissions
+
+      import Ecto.Model
+      import Ecto.Query, only: [from: 1, from: 2]
+
+      import PhoenixGuardian.Router.Helpers
+      import PhoenixGuardian.Controller.Helpers
+    end
+  end
+
   def controller do
     quote do
       use Phoenix.Controller
+      use Guardian.Phoenix.Controller
 
       alias PhoenixGuardian.Repo
+      alias Guardian.Plug.EnsureAuthenticated
+      alias Guardian.Plug.EnsurePermissions
+
       import Ecto.Model
       import Ecto.Query, only: [from: 1, from: 2]
 

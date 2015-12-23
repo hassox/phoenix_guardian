@@ -4,7 +4,6 @@ defmodule PhoenixGuardian.PrivatePageController do
   These are only granted when logging in via the browser.
   """
   use PhoenixGuardian.Web, :controller
-  use Guardian.Phoenix.Controller
 
   plug Guardian.Plug.EnsureAuthenticated, handler: __MODULE__, aud: "token"
 

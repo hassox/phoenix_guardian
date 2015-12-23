@@ -9,7 +9,7 @@
   <% end %>
 <% else %>
   <li>
-    <%= if @conn.request_path != page_path(@conn, :login) do %>
+    <%= if @conn.request_path != auth_path(@conn, :login, "identity") do %>
       <%= link "Login", to: auth_path(@conn, :login, "identity"), class: "btn btn-primary"%>
     <% end %>
   </li>

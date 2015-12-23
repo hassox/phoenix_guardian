@@ -5,7 +5,6 @@ defmodule PhoenixGuardian.AuthController do
   The actual creation and lookup of users/authorizations is handled by UserFromAuth
   """
   use PhoenixGuardian.Web, :controller
-  use Guardian.Phoenix.Controller
 
   alias PhoenixGuardian.UserFromAuth
 
