@@ -29,6 +29,8 @@ defmodule PhoenixGuardian.Router do
     plug Guardian.Plug.LoadResource, key: :admin
   end
 
+  # We need this pipeline to load the token when we're impersonating.
+  # We don't want to load the resource though, just verify the token
   pipeline :impersonation_browser_auth do
     plug Guardian.Plug.VerifySession, key: :admin
   end

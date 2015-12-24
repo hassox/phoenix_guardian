@@ -58,6 +58,7 @@ defmodule PhoenixGuardian.Mixfile do
      {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:guardian_db, "~>0.3.0"},
+     {:guardian, "~>0.8.1"},
      {:ueberauth, git: "https://github.com/ueberauth/ueberauth.git", override: true},
      {:ueberauth_github, "~>0.2.0"},
      {:ueberauth_identity, "~>0.2.1"},

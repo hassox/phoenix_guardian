@@ -19,10 +19,6 @@ defmodule PhoenixGuardian.Admin.SessionController do
   # We've aliased Guardian.Plug.EnsureAuthenticated in our PhoenixGuardian.Web.admin_controller macro
   plug EnsureAuthenticated, [key: :admin, handler: __MODULE__] when action in [:delete, :impersonate, :stop_impersonating]
 
-  # When we impersonate someone we need to log anyone who is currently there
-  # so we can correctly operate on them
-  plug Guardian.Plug.VerifySession when action in [:impersonate, :stop_impersonating]
-
   def new(conn, params, current_user, _claims) do
     render conn, "new.html", current_user: current_user
   end

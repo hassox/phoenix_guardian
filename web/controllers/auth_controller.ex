@@ -10,20 +10,6 @@ defmodule PhoenixGuardian.AuthController do
 
   plug Ueberauth
 
-  # We need to load the admin JWT if present so that when we logout
-  # guardian is aware of it to revoke correclty
-  # The reason we need to do this is because we're using a wholesale sign_out call.
-  #
-  # If in the logout function we were to call
-  #
-  #     Guardian.Plug.sign_out(:default)
-  #
-  # We'd only sign out of the normal session
-  # Instead we sign out of the entire session to make sure that the session is cleared.
-  # This is the reason we need to load it - because it only exists in the session - and if we
-  # clear out the session before we're able to revoke the token will stay in our DB
-  plug Guardian.Plug.VerifySession, [key: :admin] when action in [:logout]
-
   def login(conn, _params, current_user, _claims) do
     render conn, "login.html", current_user: current_user, current_auths: auths(current_user)
   end
