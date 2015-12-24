@@ -12,3 +12,7 @@ script:
 notifications:
   email:
     - dneighman@gmail.com
+addons:
+  postgresql: "9.4"
+services:
+  - postgresql
