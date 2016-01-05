@@ -26,7 +26,7 @@
       <% end %>
       <%= if not Enum.member?(@current_auths, "identity") do %>
         <hr>
-        <%= form_tag auth_path(@conn, :callback, "identity"), method: "post", class: "login" do %>
+        <%= form_tag auth_path(@conn, :callback, "identity"), method: "post", class: "login", novalidate: true do %>
           <div class='control-group'>
             <label class='control-label' for='email-input'>Email</label>
             <input class='form-control' type='email' name='email' value='<%= @conn.params["email"] %>' required/>

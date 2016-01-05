@@ -78,7 +78,7 @@ defmodule PhoenixGuardian.UserFromAuth do
 
   defp create_user(auth, repo) do
     name = name_from_auth(auth)
-    result = User.registration_changeset(%User{}, %{email: auth.info.email, name: name})
+    result = User.registration_changeset(%User{}, scrub(%{email: auth.info.email, name: name}))
     |> repo.insert
     case result do
       {:ok, user} -> user
@@ -118,15 +118,17 @@ defmodule PhoenixGuardian.UserFromAuth do
     authorization = Ecto.Model.build(user, :authorizations)
     result = Authorization.changeset(
       authorization,
-      %{
-        provider: to_string(auth.provider),
-        uid: uid_from_auth(auth),
-        token: token_from_auth(auth),
-        refresh_token: auth.credentials.refresh_token,
-        expires_at: auth.credentials.expires_at,
-        password: password_from_auth(auth),
-        password_confirmation: password_confirmation_from_auth(auth)
-      }
+      scrub(
+        %{
+          provider: to_string(auth.provider),
+          uid: uid_from_auth(auth),
+          token: token_from_auth(auth),
+          refresh_token: auth.credentials.refresh_token,
+          expires_at: auth.credentials.expires_at,
+          password: password_from_auth(auth),
+          password_confirmation: password_confirmation_from_auth(auth)
+        }
+      )
     ) |> repo.insert
 
     case result do
@@ -165,4 +167,15 @@ defmodule PhoenixGuardian.UserFromAuth do
     auth.credentials.other.password_confirmation
   end
   defp password_confirmation_from_auth(_), do: nil
+
+  # We don't have any nested structures in our params that we are using scrub with so this is a very simple scrub
+  defp scrub(params) do
+    result = Enum.filter(params, fn
+      {key, val} when is_binary(val) -> String.strip(val) != ""
+      {key, val} when is_nil(val) -> false
+      _ -> true
+    end)
+    |> Enum.into(%{})
+    result
+  end
 end
