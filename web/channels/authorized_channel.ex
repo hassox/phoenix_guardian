@@ -3,8 +3,7 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   use Guardian.Channel
 
   def join("authorized:lobby", %{claims: claim, resource: resource}, socket) do
-    user = Guardian.Channel.current_resource(socket)
-    {:ok, %{message: "Welcome #{user.name}"}, socket}
+    {:ok, %{message: "Welcome #{resource.name}"}, socket}
   end
 
   # Deny joining the channel if the user isn't authenticated
