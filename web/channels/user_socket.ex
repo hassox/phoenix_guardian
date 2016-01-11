@@ -3,7 +3,7 @@ defmodule PhoenixGuardian.UserSocket do
 
   ## Channels
   # channel "rooms:*", PhoenixGuardian.RoomChannel
-
+  channel "authorized:*", PhoenixGuardian.AuthorizedChannel
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll

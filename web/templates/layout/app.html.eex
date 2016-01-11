@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <%= if Guardian.Plug.current_token(@conn) do %>
+      <meta name="guardian_token" content="<%= Guardian.Plug.current_token(@conn) %>">
+    <% end %>
 
     <title>Hello Phoenix!</title>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -24,6 +27,21 @@
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <div class='row'>
+        <div class="well text-center col-sm-6 col-xs-12 col-sm-offset-3">
+          The socket says...
+          <ul class="text-left list-unstlyed" id="socket-talk"></ul>
+          <form id='socketForm' class='form form-horizontal' onsubmit='sendMessage(event)'>
+            <div class='form-group col-sm-8'>
+              <input class='form-control' placeholder='Enter your message…' name='message'/>
+            </div>
+
+            <div class='form-group col-sm-4'>
+              <button class='btn btn-primary' id="send-message">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
       <%= if @current_user do %>
         <%= render "navigation.html", current_user: @current_user, conn: @conn %>
       <% end %>
