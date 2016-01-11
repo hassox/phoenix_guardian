@@ -31,7 +31,6 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   # to the client. The default implementation is just to push it
   # downstream but one could filter or change the event.
   def handle_out("shout", payload, socket) do
-    IO.puts ("handling out")
     push socket, "shout", payload
     {:noreply, socket}
   end

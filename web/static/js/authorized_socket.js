@@ -8,11 +8,9 @@ const token = $('meta[name="guardian_token"]').attr('content');
 const channel = authSocket.channel("authorized:lobby", {guardian_token: token});
 channel.join()
         .receive("ok", resp => {
-          console.log(resp);
           socketTalk(resp.message)
         })
         .receive("error", resp => {
-          console.log(resp);
           socketTalk(resp.error)
         });
 
