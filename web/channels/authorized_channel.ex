@@ -2,6 +2,8 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   use PhoenixGuardian.Web, :channel
   use Guardian.Channel
 
+  intercept ["shout"]
+
   def join("authorized:lobby", %{claims: claim, resource: resource}, socket) do
     {:ok, %{message: "Welcome #{resource.name}"}, socket}
   end
@@ -20,7 +22,8 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (authorized:lobby).
   def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+    user = Guardian.Channel.current_resource(socket)
+    broadcast! socket, "shout", Map.put(payload, :from, user.name)
     {:noreply, socket}
   end
 
