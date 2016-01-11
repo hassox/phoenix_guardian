@@ -23,7 +23,7 @@ defmodule PhoenixGuardian.AuthorizedChannelTest do
 
   test "shout broadcasts to authorized:lobby", %{socket: socket} do
     push socket, "shout", %{"hello" => "all"}
-    assert_broadcast "shout", %{"hello" => "all"}
+    assert_broadcast "shout", %{"hello" => "all", from: "Bob Belcher"}
   end
 
   test "broadcasts are pushed to the client", %{socket: socket} do

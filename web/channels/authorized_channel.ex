@@ -2,6 +2,8 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   use PhoenixGuardian.Web, :channel
   use Guardian.Channel
 
+  # intercept ["shout"]
+
   def join("authorized:lobby", %{claims: claim, resource: resource}, socket) do
     {:ok, %{message: "Welcome #{resource.name}"}, socket}
   end
@@ -20,20 +22,17 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (authorized:lobby).
   def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+    user = Guardian.Channel.current_resource(socket)
+    broadcast! socket, "shout", Map.put(payload, :from, user.name)
     {:noreply, socket}
   end
 
   # This is invoked every time a notification is being broadcast
   # to the client. The default implementation is just to push it
   # downstream but one could filter or change the event.
-  def handle_out(event, payload, socket) do
-    push socket, event, payload
+  def handle_out("shout", payload, socket) do
+    IO.puts ("handling out")
+    push socket, "shout", payload
     {:noreply, socket}
-  end
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
   end
 end
