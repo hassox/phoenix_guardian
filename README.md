@@ -23,7 +23,7 @@ To start your Phoenix app:
   4. Export secrets for your Github and Slack application in your environment
     * ```GITHUB_CLIENT_ID```
     * ```GITHUB_CLIENT_SECRET```
-    * ```SLACK_CLIENT_SECRET```
+    * ```SLACK_CLIENT_ID```
     * ```SLACK_CLIENT_SECRET```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
