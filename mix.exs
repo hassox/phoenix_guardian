@@ -40,6 +40,8 @@ defmodule PhoenixGuardian.Mixfile do
       :ueberauth_github,
       :ueberauth_identity,
       :ueberauth_slack,
+      :ueberauth_google,
+      :ueberauth_facebook
     ]
   end
 
@@ -63,6 +65,8 @@ defmodule PhoenixGuardian.Mixfile do
      {:ueberauth_github, "~>0.2.0"},
      {:ueberauth_identity, "~>0.2.1"},
      {:ueberauth_slack, "~>0.2.0"},
+     {:ueberauth_google, "~> 0.2"},
+     {:ueberauth_facebook, "~> 0.3.2"},
      {:comeonin, "~> 1.6"},
      {:cowboy, "~> 1.0"}]
   end

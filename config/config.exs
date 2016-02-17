@@ -44,6 +44,8 @@ config :ueberauth, Ueberauth,
   providers: [
     github: {Ueberauth.Strategy.Github, [uid_field: "login"]},
     slack: { Ueberauth.Strategy.Slack, [default_scope: "users:read,identify"]},
+    google: {Ueberauth.Strategy.Google, []},
+    facebook: {Ueberauth.Strategy.Facebook, [profile_fields: "email, name"]},
     identity: {Ueberauth.Strategy.Identity, [callback_methods: ["POST"]]},
   ]
 
@@ -54,6 +56,20 @@ config :ueberauth, Ueberauth.Strategy.Github.OAuth,
 config :ueberauth, Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: System.get_env("GOOGLE_CLIENT_ID"),
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
+
+  # Optional add redirect_uri
+  # redirect_uri: "http://lvh.me:4000/auth/google/callback"
+
+config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
+  client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+  client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
+
+  # Optional add redirect_uri
+  # redirect_uri: "http://lvh.me:4000/auth/facebook/callback"
 
 config :guardian_db, GuardianDb,
        repo: PhoenixGuardian.Repo

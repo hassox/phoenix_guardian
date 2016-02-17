@@ -102,6 +102,30 @@ defmodule PhoenixGuardian.UserFromAuth do
     end
   end
 
+  defp auth_and_validate(%{provider: :google} = auth, repo) do
+    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+      nil -> {:error, :not_found}
+      authorization ->
+        if authorization.uid == uid_from_auth(auth) do
+          authorization
+        else
+          {:error, :"Google uid mismatch"}
+        end
+    end
+  end
+
+  defp auth_and_validate(%{provider: :facebook} = auth, repo) do
+    case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
+      nil -> {:error, :not_found}
+      authorization ->
+        if authorization.uid == uid_from_auth(auth) do
+          authorization
+        else
+          {:error, :"Facebook uid mismatch"}
+        end
+    end
+  end
+
   defp auth_and_validate(auth, repo) do
     case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
       nil -> {:error, :not_found}
@@ -109,7 +133,7 @@ defmodule PhoenixGuardian.UserFromAuth do
         if authorization.token == auth.credentials.token do
           authorization
         else
-          {:error, :token_mismatch}
+          {:error, :"Token mismatch"}
         end
     end
   end

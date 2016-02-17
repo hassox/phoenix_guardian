@@ -28,7 +28,9 @@
   "ranch": {:hex, :ranch, "1.2.0"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
   "ueberauth": {:git, "https://github.com/ueberauth/ueberauth.git", "153199a6d6510bff271f4b8f71c44caea2f730ff", []},
+  "ueberauth_facebook": {:hex, :ueberauth_facebook, "0.3.2"},
   "ueberauth_github": {:hex, :ueberauth_github, "0.2.0"},
+  "ueberauth_google": {:hex, :ueberauth_google, "0.2.0"},
   "ueberauth_identity": {:hex, :ueberauth_identity, "0.2.1"},
   "ueberauth_slack": {:hex, :ueberauth_slack, "0.2.0"},
   "uuid": {:hex, :uuid, "1.1.2"}}
