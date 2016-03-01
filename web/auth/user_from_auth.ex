@@ -109,11 +109,10 @@ defmodule PhoenixGuardian.UserFromAuth do
         if authorization.uid == uid_from_auth(auth) do
           authorization
         else
-          {:error, :"#{auth.provider} uid mismatch"}
+          {:error, :uid_mismatch}
         end
     end
   end
-
 
   defp auth_and_validate(auth, repo) do
     case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
@@ -122,7 +121,7 @@ defmodule PhoenixGuardian.UserFromAuth do
         if authorization.token == auth.credentials.token do
           authorization
         else
-          {:error, :"Token mismatch"}
+          {:error, :token_mismatch}
         end
     end
   end
