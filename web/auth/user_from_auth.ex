@@ -106,7 +106,7 @@ defmodule PhoenixGuardian.UserFromAuth do
     case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
       nil -> {:error, :not_found}
       authorization ->
-        if authorization.token == auth.credentials.token do
+        if authorization.uid == auth.uid do
           authorization
         else
           {:error, :token_mismatch}
