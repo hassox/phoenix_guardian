@@ -109,7 +109,7 @@ defmodule PhoenixGuardian.UserFromAuth do
         if authorization.uid == auth.uid do
           authorization
         else
-          {:error, :token_mismatch}
+          {:error, :uid_mismatch}
         end
     end
   end
