@@ -105,12 +105,7 @@ defmodule PhoenixGuardian.UserFromAuth do
   defp auth_and_validate(auth, repo) do
     case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
       nil -> {:error, :not_found}
-      authorization ->
-        if authorization.uid == auth.uid do
-          authorization
-        else
-          {:error, :uid_mismatch}
-        end
+      authorization -> authorization
     end
   end
 
