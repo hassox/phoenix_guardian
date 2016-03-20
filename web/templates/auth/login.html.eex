@@ -16,6 +16,22 @@
           </a>
         </p>
       <% end %>
+      <%= if not Enum.member?(@current_auths, "google") do %>
+        <p>
+          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "google") %>">
+            <i class='fa fa-google'></i>
+            Google
+          </a>
+        </p>
+      <% end %>
+      <%= if not Enum.member?(@current_auths, "facebook") do %>
+        <p>
+          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "facebook") %>">
+            <i class='fa fa-facebook'></i>
+            Facebook
+          </a>
+        </p>
+      <% end %>
       <%= if not Enum.member?(@current_auths, "slack") do %>
         <p>
           <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "slack") %>">

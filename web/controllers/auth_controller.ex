@@ -29,7 +29,7 @@ defmodule PhoenixGuardian.AuthController do
         |> redirect(to: private_page_path(conn, :index))
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Could not authenticate")
+        |> put_flash(:error, "Could not authenticate. Error: #{_reason}")
         |> render("login.html", current_user: current_user, current_auths: auths(current_user))
     end
   end
