@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hassox/phoenix_guardian.svg?branch=ueberauth-guardian)](https://travis-ci.org/hassox/phoenix_guardian)
 
-Provides an example implementation for authentication in Phoneix applications
+Provides an example implementation for authentication in Phoenix applications
 using Überauth and Guardian.
 
 The main user model is `User` which has many `Authorization`s. This is done so
