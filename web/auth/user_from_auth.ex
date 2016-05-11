@@ -20,11 +20,38 @@ defmodule PhoenixGuardian.UserFromAuth do
   defp validate_auth_for_registration(%Auth{provider: :identity} = auth) do
     pw = Map.get(auth.credentials.other, :password)
     pwc = Map.get(auth.credentials.other, :password_confirmation)
-    if pw == nil or pw == "" or pw == pwc, do: :ok, else: {:error, :password_confirmation_does_not_match}
+    email = auth.info.email
+    case pw do
+      nil ->
+        {:error, :password_is_null}
+      "" ->
+        {:error, :password_empty}
+      ^pwc ->
+        validate_pw_length(pw, email)
+      _ ->
+        {:error, :password_confirmation_does_not_match}     
+    end
   end
 
   # All the other providers are oauth so should be good
   defp validate_auth_for_registration(auth), do: :ok
+
+  defp validate_pw_length(pw, email) when is_binary(pw) do
+    if String.length(pw) >= 8 do
+      validate_email(email)
+    else
+      {:error, :password_length_is_less_than_8}
+    end
+  end
+
+  defp validate_email(email) when is_binary(email) do
+    case Regex.run(~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, email) do
+      nil ->
+        {:error, :invalid_email}
+      [email] ->
+        :ok
+    end
+  end
 
   defp register_user_from_auth(auth, current_user, repo) do
     case validate_auth_for_registration(auth) do
