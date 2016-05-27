@@ -21,8 +21,9 @@ defmodule PhoenixGuardian.ChannelCase do
       use Phoenix.ChannelTest
 
       alias PhoenixGuardian.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query, only: [from: 1, from: 2]
 
 
       # The default endpoint for testing
@@ -31,8 +32,10 @@ defmodule PhoenixGuardian.ChannelCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixGuardian.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixGuardian.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixGuardian.Repo, {:shared, self()})
     end
 
     :ok

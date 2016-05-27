@@ -21,7 +21,7 @@ defmodule PhoenixGuardian.ConnCase do
       use Phoenix.ConnTest
 
       alias PhoenixGuardian.Repo
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 2]
 
       import PhoenixGuardian.Router.Helpers
@@ -51,10 +51,12 @@ defmodule PhoenixGuardian.ConnCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixGuardian.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixGuardian.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixGuardian.Repo, {:shared, self()})
     end
 
-    :ok
+    {:ok, conn: Phoenix.ConnTest.conn()}
   end
 end

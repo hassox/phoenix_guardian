@@ -5,7 +5,7 @@ defmodule PhoenixGuardian.TokenController do
   alias Guardian.Plug.EnsureAuthenticated
   alias Guardian.Plug.EnsurePermissions
 
-  plug EnsureAuthenticated, handler: __MODULE__, typ: "token"
+  plug EnsureAuthenticated, handler: __MODULE__, typ: "access"
   plug EnsurePermissions, [handler: __MODULE__, default: ~w(read_token)] when action in [:index]
   plug EnsurePermissions, [handler: __MODULE__, default: ~w(revoke_token)] when action in [:delete]
 

@@ -17,17 +17,23 @@ defmodule PhoenixGuardian.ModelCase do
   using do
     quote do
       alias PhoenixGuardian.Repo
-      import Ecto.Model
+      import Ecto
+      import Ecto.Changeset
       import Ecto.Query, only: [from: 2]
       import PhoenixGuardian.ModelCase
     end
   end
 
   setup tags do
-    unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(PhoenixGuardian.Repo, [])
-    end
+    # Explicitly get a connection before each test
+    # By default the test is wrapped in a transaction
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PhoenixGuardian.Repo)
 
+    # The :shared mode allows a process to share 
+    # its connection with any other process automatically
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(PhoenixGuardian.Repo, {:shared, self()})
+    end
     :ok
   end
 

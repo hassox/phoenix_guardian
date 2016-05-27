@@ -22,7 +22,7 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (authorized:lobby).
   def handle_in("shout", payload, socket) do
-    user = Guardian.Channel.current_resource(socket)
+    user = current_resource(socket)
     broadcast! socket, "shout", Map.put(payload, :from, user.name)
     {:noreply, socket}
   end
