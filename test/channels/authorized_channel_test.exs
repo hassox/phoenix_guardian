@@ -1,5 +1,5 @@
 defmodule PhoenixGuardian.AuthorizedChannelTest do
-  use PhoenixGuardian.ChannelCase, async: false
+  use PhoenixGuardian.ChannelCase
 
   alias PhoenixGuardian.AuthorizedChannel
   import PhoenixGuardian.Factory
