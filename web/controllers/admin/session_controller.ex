@@ -37,7 +37,7 @@ defmodule PhoenixGuardian.Admin.SessionController do
         if user.is_admin do
           conn
           |> put_flash(:info, "Signed in as #{user.name}")
-          |> Guardian.Plug.sign_in(user, :token, key: :admin, perms: %{default: Guardian.Permissions.max})
+          |> Guardian.Plug.sign_in(user, :access, key: :admin, perms: %{default: Guardian.Permissions.max})
           |> redirect(to: admin_user_path(conn, :index))
         else
           conn
@@ -62,7 +62,7 @@ defmodule PhoenixGuardian.Admin.SessionController do
     user = Repo.get(User, params["user_id"])
     conn
     |> Guardian.Plug.sign_out(:default)
-    |> Guardian.Plug.sign_in(user, :token, perms: %{default: Guardian.Permissions.max})
+    |> Guardian.Plug.sign_in(user, :access, perms: %{default: Guardian.Permissions.max})
     |> redirect(to: "/")
   end
 

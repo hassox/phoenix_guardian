@@ -8,10 +8,12 @@ defmodule PhoenixGuardian.AuthorizedChannelTest do
     user = create(:user)
     {:ok, jwt, _} = Guardian.encode_and_sign(user)
     {:ok, _, socket} =
-      socket()
-    |> subscribe_and_join(AuthorizedChannel,
-                          "authorized:lobby",
-                          %{"guardian_token" => "#{jwt}"})
+    socket("authd_socket", %{})
+    |> subscribe_and_join(
+      AuthorizedChannel,
+      "authorized:lobby",
+      %{"guardian_token" => "#{jwt}"}
+    )
 
     {:ok, socket: socket}
   end

@@ -84,7 +84,7 @@ defmodule PhoenixGuardian.UserFromAuth do
   end
 
   defp user_from_authorization(authorization, current_user, repo) do
-    case repo.one(Ecto.Model.assoc(authorization, :user)) do
+    case repo.one(Ecto.assoc(authorization, :user)) do
       nil -> {:error, :user_not_found}
       user ->
         if current_user && current_user.id != user.id do
@@ -129,7 +129,7 @@ defmodule PhoenixGuardian.UserFromAuth do
     end
   end
 
-  defp auth_and_validate(%{provider: service} = auth, repo)  when service in [:google, :facebook] do
+  defp auth_and_validate(%{provider: service} = auth, repo)  when service in [:google, :facebook, :github] do
     case repo.get_by(Authorization, uid: uid_from_auth(auth), provider: to_string(auth.provider)) do
       nil -> {:error, :not_found}
       authorization ->
@@ -154,7 +154,7 @@ defmodule PhoenixGuardian.UserFromAuth do
   end
 
   defp authorization_from_auth(user, auth, repo) do
-    authorization = Ecto.Model.build(user, :authorizations)
+    authorization = Ecto.build_assoc(user, :authorizations)
     result = Authorization.changeset(
       authorization,
       scrub(

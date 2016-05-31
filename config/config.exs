@@ -24,6 +24,8 @@ config :phoenix, :generators,
   migration: true,
   binary_id: false
 
+config :phoenix_guardian, ecto_repos: [PhoenixGuardian.Repo]
+
 config :guardian, Guardian,
   issuer: "PhoenixGuardian.#{Mix.env}",
   ttl: {30, :days},

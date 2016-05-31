@@ -4,7 +4,7 @@ defmodule PhoenixGuardian.Mixfile do
   def project do
     [app: :phoenix_guardian,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -31,17 +31,19 @@ defmodule PhoenixGuardian.Mixfile do
     [
       :comeonin,
       :cowboy,
+      :ecto,
       :logger,
       :oauth2,
       :phoenix,
       :phoenix_ecto,
       :phoenix_html,
       :postgrex,
+      :ueberauth,
+      :ueberauth_facebook,
       :ueberauth_github,
+      :ueberauth_google,
       :ueberauth_identity,
       :ueberauth_slack,
-      :ueberauth_google,
-      :ueberauth_facebook
     ]
   end
 
@@ -54,20 +56,22 @@ defmodule PhoenixGuardian.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [{:ex_machina, "~>0.6", only: [:dev, :test]},
-     {:phoenix, "~> 1.1.0"},
-     {:phoenix_ecto, "~> 2.0"},
-     {:postgrex, ">= 0.0.0", override: true},
-     {:phoenix_html, "~> 2.3"},
+     {:ecto, "~> 2.0.0-rc.5", override: true},
+     {:phoenix, "~> 1.1.4"},
+     {:phoenix_ecto, "~> 3.0.0-rc.0", override: true},
+     {:phoenix_html, "~> 2.5.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:guardian_db, "0.4.0"},
-     {:guardian, "0.9.0"},
-     {:ueberauth, git: "https://github.com/ueberauth/ueberauth.git", override: true},
+     {:postgrex, ">= 0.11.1", override: true},
+     {:guardian_db, "0.6.0"},
+     {:guardian, "~> 0.12.0"},
+     {:ueberauth, github: "ueberauth/ueberauth", override: true},
      {:ueberauth_github, "~>0.2.0"},
-     {:ueberauth_identity, "~>0.2.1"},
+     {:ueberauth_identity, "~>0.2.3"},
      {:ueberauth_slack, "~>0.2.0"},
      {:ueberauth_google, "~> 0.2"},
      {:ueberauth_facebook, "~> 0.3.2"},
-     {:comeonin, "~> 1.6"},
+     {:comeonin, "~> 2.4"},
+     {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"}]
   end
 

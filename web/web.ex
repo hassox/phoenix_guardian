@@ -18,7 +18,7 @@ defmodule PhoenixGuardian.Web do
 
   def model do
     quote do
-      use Ecto.Model
+      use Ecto.Schema
 
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
@@ -34,7 +34,7 @@ defmodule PhoenixGuardian.Web do
       alias Guardian.Plug.EnsureAuthenticated
       alias Guardian.Plug.EnsurePermissions
 
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 1, from: 2]
 
       import PhoenixGuardian.Router.Helpers
@@ -51,7 +51,7 @@ defmodule PhoenixGuardian.Web do
       alias Guardian.Plug.EnsureAuthenticated
       alias Guardian.Plug.EnsurePermissions
 
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 1, from: 2]
 
       import PhoenixGuardian.Router.Helpers
@@ -85,7 +85,7 @@ defmodule PhoenixGuardian.Web do
       use Phoenix.Channel
 
       alias PhoenixGuardian.Repo
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 1, from: 2]
     end
   end

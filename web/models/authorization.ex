@@ -15,8 +15,8 @@ defmodule PhoenixGuardian.Authorization do
     timestamps
   end
 
-  @required_fields ~w(provider uid user_id token)
-  @optional_fields ~w(refresh_token expires_at)
+  @required_fields ~w(provider uid user_id token)a
+  @optional_fields ~w(refresh_token expires_at)a
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -26,7 +26,8 @@ defmodule PhoenixGuardian.Authorization do
   """
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> foreign_key_constraint(:user_id)
     |> unique_constraint(:provider_uid)
   end

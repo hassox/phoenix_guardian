@@ -1,14 +1,17 @@
 sudo: false
 language: elixir
 elixir:
-  - 1.1.0
+  - 1.2.1
 otp_release:
-  - 18.0
+  - 18.2
 env:
   - MIX_ENV=test
+install:
+  - rm -rf _build
+  - mix local.hex --force
+  - mix deps.get
 script:
-  - mix test --exclude expensive
-  - mix test --only expensive
+  - mix test
 notifications:
   email:
     - dneighman@gmail.com
