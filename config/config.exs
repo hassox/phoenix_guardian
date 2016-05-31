@@ -74,7 +74,9 @@ config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
   # redirect_uri: "http://lvh.me:4000/auth/facebook/callback"
 
 config :guardian_db, GuardianDb,
-       repo: PhoenixGuardian.Repo
+  repo: PhoenixGuardian.Repo,
+  sweep_interval: 60 # 60 minutes
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

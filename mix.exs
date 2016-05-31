@@ -62,7 +62,7 @@ defmodule PhoenixGuardian.Mixfile do
      {:phoenix_html, "~> 2.5.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:postgrex, ">= 0.11.1", override: true},
-     {:guardian_db, "0.6.0"},
+     {:guardian_db, "~> 0.7"},
      {:guardian, "~> 0.12.0"},
      {:ueberauth, github: "ueberauth/ueberauth", override: true},
      {:ueberauth_github, "~>0.2.0"},
