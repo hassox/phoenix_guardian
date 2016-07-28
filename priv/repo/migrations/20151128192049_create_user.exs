@@ -8,7 +8,7 @@ defmodule PhoenixGuardian.Repo.Migrations.CreateUser do
       add :name, :string
       add :email, :citext
 
-      timestamps
+      timestamps()
     end
 
     create index(:users, [:email], unique: true)

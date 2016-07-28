@@ -5,7 +5,7 @@ defmodule PhoenixGuardian.AuthorizedChannelTest do
   import PhoenixGuardian.Factory
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _} = Guardian.encode_and_sign(user)
     {:ok, _, socket} =
     socket("authd_socket", %{})

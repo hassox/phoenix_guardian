@@ -52,7 +52,7 @@ defmodule PhoenixGuardian.ModelCase do
 
       assert {:password, "is unsafe"} in errors_on(%User{}, %{password: "password"})
 
-  You can also create the changeset manually and retrieve the errors
+  You can also insert the changeset manually and retrieve the errors
   field directly:
 
       iex> changeset = User.changeset(%User{}, password: "password")
