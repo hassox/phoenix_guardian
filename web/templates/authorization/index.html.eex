@@ -1,24 +1,24 @@
 <%= case @authorizations do %>
-<% [] -> %>
-  <p>No authorization found</p>
-<% auths -> %>
-  <table class='table table-hover'>
-    <thead>
-      <th>Provider</th>
-      <th>UID</th>
-      <th>Expires</th>
-      <th>Inserted</th>
-      <th>Token</th>
-    </thead>
+  <% [] -> %>
+    <p>No authorization found</p>
+  <% auths -> %>
+    <table class='table table-hover'>
+      <thead>
+        <th>Provider</th>
+        <th>UID</th>
+        <th>Expires</th>
+        <th>Inserted</th>
+        <th>Token</th>
+      </thead>
 
-    <%= for auth <- auths do %>
-      <tr>
-        <td><%= auth.provider %></td>
-        <td><%= auth.uid %></td>
-        <td><%= auth.expires_at %></td>
-        <td><%= auth.inserted_at %></td>
-        <td><%= String.slice(auth.token, 0..20) %>…</td>
-      </tr>
-    <% end %>
-  </table>
+      <%= for auth <- auths do %>
+        <tr>
+          <td><%= auth.provider %></td>
+          <td><%= auth.uid %></td>
+          <td><%= auth.expires_at %></td>
+          <td><%= auth.inserted_at %></td>
+          <td><%= String.slice(auth.token, 0..20) %>…</td>
+        </tr>
+      <% end %>
+    </table>
 <% end %>

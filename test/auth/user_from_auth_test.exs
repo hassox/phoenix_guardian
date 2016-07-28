@@ -38,12 +38,12 @@ defmodule PhoenixGuardian.UserFromAuthTest do
   def user_count, do: Repo.one(from u in User, select: count(u.id))
   def authorization_count, do: Repo.one(from a in Authorization, select: count(a.id))
 
-  test "it creates a new authorization and user when there is neither", %{auth: auth} do
-    before_users = user_count
-    before_authorizations = authorization_count
+  test "it inserts a new authorization and user when there is neither", %{auth: auth} do
+    before_users = user_count()
+    before_authorizations = authorization_count()
     {:ok, user} = UserFromAuth.get_or_insert(auth, nil, Repo)
-    after_users = user_count
-    after_authorizations = authorization_count
+    after_users = user_count()
+    after_authorizations = authorization_count()
 
     assert after_users == (before_users + 1)
     assert after_authorizations == (before_authorizations + 1)
@@ -63,24 +63,24 @@ defmodule PhoenixGuardian.UserFromAuthTest do
       }
     ) |> Repo.insert
 
-    before_users = user_count
-    before_authorizations = authorization_count
+    before_users = user_count()
+    before_authorizations = authorization_count()
     {:ok, user_from_auth} = UserFromAuth.get_or_insert(auth, nil, Repo)
     assert user_from_auth.id == user.id
 
-    assert user_count == before_users
-    assert authorization_count == before_authorizations
+    assert user_count() == before_users
+    assert authorization_count() == before_authorizations
   end
 
   test "it returns an existing user when the user has the same email", %{auth: auth} do
     {:ok, user} = User.registration_changeset(%User{}, %{email: @email, name: @name}) |> Repo.insert
-    before_users = user_count
-    before_authorizations = authorization_count
+    before_users = user_count()
+    before_authorizations = authorization_count()
     {:ok, user_from_auth} = UserFromAuth.get_or_insert(auth, nil, Repo)
     assert user_from_auth.id == user.id
 
-    assert user_count == before_users
-    assert authorization_count == before_authorizations + 1
+    assert user_count() == before_users
+    assert authorization_count() == before_authorizations + 1
   end
 
   test "it deletes the authorization and makes a new one when the old one is expired", %{auth: auth} do
@@ -96,13 +96,13 @@ defmodule PhoenixGuardian.UserFromAuthTest do
       }
     ) |> Repo.insert
 
-    before_users = user_count
-    before_authorizations = authorization_count
+    before_users = user_count()
+    before_authorizations = authorization_count()
     {:ok, user_from_auth} = UserFromAuth.get_or_insert(auth, nil, Repo)
 
     assert user_from_auth.id == user.id
-    assert before_users == user_count
-    assert authorization_count == before_authorizations
+    assert before_users == user_count()
+    assert authorization_count() == before_authorizations
     auth2 = Repo.one(Ecto.assoc(user, :authorizations))
     refute auth2.id == authorization.id
   end
@@ -124,4 +124,3 @@ defmodule PhoenixGuardian.UserFromAuthTest do
     {:error, :user_does_not_match} = UserFromAuth.get_or_insert(auth, current_user, Repo)
   end
 end
-
