@@ -41,3 +41,10 @@ defmodule PhoenixGuardian.User do
     |> Repo.update!
   end
 end
+
+defimpl Bamboo.Formatter, for: PhoenixGuardian.User do
+  # Used by `to`, `bcc`, `cc` and `from`
+  def format_email_address(user, _opts) do
+    {user.name || user.name, user.email}
+  end
+end

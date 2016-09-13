@@ -77,8 +77,11 @@ config :guardian_db, GuardianDb,
   repo: PhoenixGuardian.Repo,
   sweep_interval: 60 # 60 minutes
 
+config :phoenix_guardian, PhoenixGuardian.Mailer,
+  adapter: Bamboo.LocalAdapter,
+  from_mail: "your_email@your_domain",
+  reply_to_mail: "your_email@your_domain"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
-

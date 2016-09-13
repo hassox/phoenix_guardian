@@ -1,0 +1,12 @@
+<%= form_tag password_path(@conn, :create) do %>
+  <p>
+    Enter the email address associated with your account, and we'll email you a link to reset your password.
+  </p>
+  <div class="input-group">
+    <span class="icon icon-outline icon-mail label-group"></span>
+    <input type="email" name="email" class="with-icon" placeholder="Email address" required/>
+    <!-- <label class="account-label label-group" for="email-input">Email address</label> -->
+  </div>
+
+  <button>Send Request Link</button>
+<% end %>

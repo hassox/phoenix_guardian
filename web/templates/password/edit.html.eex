@@ -1,0 +1,15 @@
+<%= form_tag password_path(@conn, :update), [method: "PUT"] do %>
+  <input type="hidden" name="token" value="<%= @token %>">
+
+  <p>
+    Enter a new password below and we'll update your Cubspot account.
+  </p>
+
+  <div class="input-group">
+    <span class="icon icon-outline icon-lock label-group"></span>
+    <input type="password" name="password" class="with-icon" placeholder="Password" required/>
+    <!-- <label class="account-label label-group" for="password-input">Password</label> -->
+  </div>
+
+  <button>Update Password</button>
+<% end %>

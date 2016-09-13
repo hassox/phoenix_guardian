@@ -58,6 +58,7 @@
           </div>
         <% end %>
         <p><%= link "Signup with your email", to: user_path(@conn, :new) %></p>
+        <p>Trouble logging in? <%= link "Reset your password here", to: password_path(@conn, :new) %></p>
       <% end %>
     </div>
   </div>
