@@ -31,4 +31,20 @@ defmodule PhoenixGuardian.Authorization do
     |> foreign_key_constraint(:user_id)
     |> unique_constraint(:provider_uid)
   end
+
+  def hash_token_changeset(model, params \\ %{}) do
+    model
+    |> changeset(params)
+    |> hash_token_input
+  end
+
+  defp hash_token_input(changeset) do
+    token = get_change(changeset, :token)
+
+    if token do
+      put_change(changeset, :token, Comeonin.Bcrypt.hashpwsalt(token))
+    else
+      changeset
+    end
+  end
 end

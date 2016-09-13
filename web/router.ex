@@ -1,6 +1,10 @@
 defmodule PhoenixGuardian.Router do
   use PhoenixGuardian.Web, :router
 
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.EmailPreviewPlug
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -59,6 +63,7 @@ defmodule PhoenixGuardian.Router do
     resources "/users", UserController
     resources "/authorizations", AuthorizationController
     resources "/tokens", TokenController
+    resources "/password", PasswordController, only: [:new, :create, :edit, :update], singleton: true
 
     get "/private", PrivatePageController, :index
   end
