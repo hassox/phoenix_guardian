@@ -197,7 +197,7 @@ defmodule PhoenixGuardian.UserFromAuth do
   defp token_from_auth(auth), do: auth.credentials.token
 
   defp uid_from_auth(%{ provider: :slack } = auth), do: auth.credentials.other.user_id
-  defp uid_from_auth(auth), do: auth.uid
+  defp uid_from_auth(auth), do: auth.uid || ""
 
   defp password_from_auth(%{provider: :identity} = auth), do: auth.credentials.other.password
   defp password_from_auth(_), do: nil
