@@ -96,9 +96,8 @@ defmodule PhoenixGuardian.UserFromAuth do
   end
 
   defp create_user_from_auth(auth, current_user, repo) do
-    user = current_user
-    if !user, do: user = repo.get_by(User, email: auth.info.email)
-    if !user, do: user = create_user(auth, repo)
+    user = current_user || repo.get_by(User, email: auth.info.email) || create_user(auth, repo)
+
     authorization_from_auth(user, auth, repo)
     {:ok, user}
   end
