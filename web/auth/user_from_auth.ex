@@ -29,12 +29,12 @@ defmodule PhoenixGuardian.UserFromAuth do
       ^pwc ->
         validate_pw_length(pw, email)
       _ ->
-        {:error, :password_confirmation_does_not_match}     
+        {:error, :password_confirmation_does_not_match}
     end
   end
 
   # All the other providers are oauth so should be good
-  defp validate_auth_for_registration(auth), do: :ok
+  defp validate_auth_for_registration(_auth), do: :ok
 
   defp validate_pw_length(pw, email) when is_binary(pw) do
     if String.length(pw) >= 8 do
@@ -48,7 +48,7 @@ defmodule PhoenixGuardian.UserFromAuth do
     case Regex.run(~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, email) do
       nil ->
         {:error, :invalid_email}
-      [email] ->
+      [_email] ->
         :ok
     end
   end
@@ -210,8 +210,8 @@ defmodule PhoenixGuardian.UserFromAuth do
   # We don't have any nested structures in our params that we are using scrub with so this is a very simple scrub
   defp scrub(params) do
     result = Enum.filter(params, fn
-      {key, val} when is_binary(val) -> String.strip(val) != ""
-      {key, val} when is_nil(val) -> false
+      {_key, val} when is_binary(val) -> String.strip(val) != ""
+      {_key, val} when is_nil(val) -> false
       _ -> true
     end)
     |> Enum.into(%{})

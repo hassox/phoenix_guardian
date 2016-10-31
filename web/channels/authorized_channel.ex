@@ -4,18 +4,18 @@ defmodule PhoenixGuardian.AuthorizedChannel do
 
   # intercept ["shout"]
 
-  def join("authorized:lobby", %{claims: claim, resource: resource}, socket) do
+  def join("authorized:lobby", %{claims: _claim, resource: resource}, socket) do
     {:ok, %{message: "Welcome #{resource.name}"}, socket}
   end
 
   # Deny joining the channel if the user isn't authenticated
-  def join("authorized:lobby", _, socket) do
+  def join("authorized:lobby", _, _socket) do
     {:error, %{error: "not authorized, are you logged in?"}}
   end
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
+  def handle_in("ping", _payload, socket) do
     {:reply, {:ok, %{message: "pong"}}, socket}
   end
 
