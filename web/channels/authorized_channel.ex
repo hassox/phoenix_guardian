@@ -2,7 +2,7 @@ defmodule PhoenixGuardian.AuthorizedChannel do
   use PhoenixGuardian.Web, :channel
   use Guardian.Channel
 
-  # intercept ["shout"]
+  intercept ["shout"]
 
   def join("authorized:lobby", %{claims: _claim, resource: resource}, socket) do
     {:ok, %{message: "Welcome #{resource.name}"}, socket}
