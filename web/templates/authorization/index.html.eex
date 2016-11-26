@@ -1,7 +1,6 @@
-<%= case @authorizations do %>
-<% [] -> %>
+<%= if (@authorizations == []) do %>
   <p>No authorization found</p>
-<% auths -> %>
+<% else %>
   <table class='table table-hover'>
     <thead>
       <th>Provider</th>
@@ -11,7 +10,7 @@
       <th>Token</th>
     </thead>
 
-    <%= for auth <- auths do %>
+    <%= for auth <- @authorizations do %>
       <tr>
         <td><%= auth.provider %></td>
         <td><%= auth.uid %></td>
