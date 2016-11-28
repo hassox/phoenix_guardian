@@ -7,7 +7,7 @@ defmodule PhoenixGuardian.UserControllerTest do
   end
 
   test "GET /admin/users without login" do
-    conn = conn()
+    conn = build_conn()
     conn = get conn, admin_user_path(conn, :index)
     assert html_response(conn, 302)
   end
@@ -26,4 +26,3 @@ defmodule PhoenixGuardian.UserControllerTest do
     assert conn.resp_body =~ user2.email
   end
 end
-

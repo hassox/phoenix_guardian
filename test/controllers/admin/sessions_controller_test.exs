@@ -11,7 +11,7 @@ defmodule PhoenixGuardian.SessionControllerTest do
   end
 
   test "/GET login when not logged in as admin" do
-    conn = conn()
+    conn = build_conn()
     conn = get conn, admin_login_path(conn, :new)
     assert html_response(conn, 200)
   end
@@ -23,8 +23,8 @@ defmodule PhoenixGuardian.SessionControllerTest do
   end
 
   test "/POST login when not logged in", %{user: user} do
-    conn = conn()
-    |> post(admin_session_path(conn, :callback, "identity"), email: user.email, password: "sekrit")
+    conn = build_conn()
+    |> post(admin_session_path(build_conn(), :callback, "identity"), email: user.email, password: "sekrit")
 
     assert html_response(conn, 302)
     assert Guardian.Plug.current_resource(conn, :admin).id == user.id
