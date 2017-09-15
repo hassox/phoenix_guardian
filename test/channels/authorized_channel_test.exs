@@ -5,15 +5,12 @@ defmodule PhoenixGuardian.AuthorizedChannelTest do
   import PhoenixGuardian.Factory
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _} = Guardian.encode_and_sign(user)
     {:ok, _, socket} =
-    socket("authd_socket", %{})
-    |> subscribe_and_join(
-      AuthorizedChannel,
-      "authorized:lobby",
-      %{"guardian_token" => "#{jwt}"}
-    )
+      "authd_socket"
+      |> socket(%{})
+      |> subscribe_and_join(AuthorizedChannel, "authorized:lobby", %{"guardian_token" => "#{jwt}"})
 
     {:ok, socket: socket}
   end

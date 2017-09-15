@@ -10,7 +10,7 @@ defmodule PhoenixGuardian.User do
 
     has_many :authorizations, PhoenixGuardian.Authorization
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(email name)a

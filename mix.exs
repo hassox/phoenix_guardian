@@ -9,8 +9,8 @@ defmodule PhoenixGuardian.Mixfile do
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application.
@@ -43,7 +43,6 @@ defmodule PhoenixGuardian.Mixfile do
       :ueberauth_github,
       :ueberauth_google,
       :ueberauth_identity,
-      :ueberauth_slack,
     ]
   end
 
@@ -55,23 +54,23 @@ defmodule PhoenixGuardian.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:ex_machina, "~>0.6", only: [:dev, :test]},
-     {:ecto, "~> 2.0.0-rc.5", override: true},
-     {:phoenix, "~> 1.1.4"},
-     {:phoenix_ecto, "~> 3.0.0-rc.0", override: true},
-     {:phoenix_html, "~> 2.5.1"},
+    [{:ex_machina, "~> 2.1", only: [:dev, :test]},
+     {:phoenix_pubsub, "~> 1.0"},
+     {:phoenix, "~> 1.3.0"},
+     {:phoenix_ecto, "~> 3.2"},
+     {:phoenix_html, "~> 2.10"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:postgrex, ">= 0.11.1", override: true},
-     {:guardian_db, "~> 0.7"},
-     {:guardian, "~> 0.12.0"},
-     {:ueberauth, github: "ueberauth/ueberauth", override: true},
-     {:ueberauth_github, "~>0.2.0"},
-     {:ueberauth_identity, "~>0.2.3"},
-     {:ueberauth_slack, "~>0.2.0"},
-     {:ueberauth_google, "~> 0.2"},
-     {:ueberauth_facebook, "~> 0.3.2"},
-     {:comeonin, "~> 2.4"},
-     {:gettext, "~> 0.9"},
+     {:postgrex, ">= 0.11.1"},
+     {:guardian_db, "~> 0.8"},
+     {:guardian, "~> 0.14"},
+     {:ueberauth, "~> 0.4"},
+     {:ueberauth_github, "~> 0.4"},
+     {:ueberauth_identity, "~> 0.2"},
+     {:ueberauth_google, "~> 0.5"},
+     {:ueberauth_facebook, "~> 0.7"},
+     {:comeonin, "~> 4.0"},
+     {:bcrypt_elixir, "~> 1.0"},
+     {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"}]
   end
 

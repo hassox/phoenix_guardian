@@ -12,7 +12,7 @@ defmodule PhoenixGuardian.Authorization do
 
     belongs_to :user, PhoenixGuardian.User
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(provider uid user_id token)a

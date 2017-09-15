@@ -32,14 +32,6 @@
           </a>
         </p>
       <% end %>
-      <%= if not Enum.member?(@current_auths, "slack") do %>
-        <p>
-          <a class="btn btn-primary col-xs-12" href="<%= auth_path(@conn, :login, "slack") %>">
-            <i class='fa fa-slack'></i>
-            Slack
-          </a>
-        </p>
-      <% end %>
       <%= if not Enum.member?(@current_auths, "identity") do %>
         <hr>
         <%= form_tag auth_path(@conn, :callback, "identity"), method: "post", class: "login", novalidate: true do %>

@@ -34,7 +34,7 @@ defmodule PhoenixGuardian.UserFromAuth do
   end
 
   # All the other providers are oauth so should be good
-  defp validate_auth_for_registration(auth), do: :ok
+  defp validate_auth_for_registration(_auth), do: :ok
 
   defp validate_pw_length(pw, email) when is_binary(pw) do
     if String.length(pw) >= 8 do
@@ -46,10 +46,8 @@ defmodule PhoenixGuardian.UserFromAuth do
 
   defp validate_email(email) when is_binary(email) do
     case Regex.run(~r/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, email) do
-      nil ->
-        {:error, :invalid_email}
-      [email] ->
-        :ok
+      nil -> {:error, :invalid_email}
+      [_email] -> :ok
     end
   end
 
@@ -71,7 +69,7 @@ defmodule PhoenixGuardian.UserFromAuth do
           {:ok, user} ->
             case repo.transaction(fn ->
               repo.delete(authorization)
-              authorization_from_auth(user, auth, repo)
+              insert_authorization_from_auth(user, auth, repo)
               user
             end) do
               {:ok, user} -> {:ok, user}
@@ -96,10 +94,10 @@ defmodule PhoenixGuardian.UserFromAuth do
   end
 
   defp create_user_from_auth(auth, current_user, repo) do
-    user = current_user
-    if !user, do: user = repo.get_by(User, email: auth.info.email)
-    if !user, do: user = create_user(auth, repo)
-    authorization_from_auth(user, auth, repo)
+    user = current_user ||
+      repo.get_by(User, email: auth.info.email) ||
+      create_user(auth, repo)
+    insert_authorization_from_auth(user, auth, repo)
     {:ok, user}
   end
 
@@ -153,7 +151,7 @@ defmodule PhoenixGuardian.UserFromAuth do
     end
   end
 
-  defp authorization_from_auth(user, auth, repo) do
+  defp insert_authorization_from_auth(user, auth, repo) do
     authorization = Ecto.build_assoc(user, :authorizations)
     result = Authorization.changeset(
       authorization,
@@ -181,7 +179,7 @@ defmodule PhoenixGuardian.UserFromAuth do
       auth.info.name
     else
       [auth.info.first_name, auth.info.last_name]
-      |> Enum.filter(&(&1 != nil and String.strip(&1) != ""))
+      |> Enum.filter(&(&1 != nil and String.trim(&1) != ""))
       |> Enum.join(" ")
     end
   end
@@ -196,7 +194,6 @@ defmodule PhoenixGuardian.UserFromAuth do
 
   defp token_from_auth(auth), do: auth.credentials.token
 
-  defp uid_from_auth(%{ provider: :slack } = auth), do: auth.credentials.other.user_id
   defp uid_from_auth(auth), do: auth.uid
 
   defp password_from_auth(%{provider: :identity} = auth), do: auth.credentials.other.password
@@ -210,8 +207,8 @@ defmodule PhoenixGuardian.UserFromAuth do
   # We don't have any nested structures in our params that we are using scrub with so this is a very simple scrub
   defp scrub(params) do
     result = Enum.filter(params, fn
-      {key, val} when is_binary(val) -> String.strip(val) != ""
-      {key, val} when is_nil(val) -> false
+      {_key, val} when is_binary(val) -> String.trim(val) != ""
+      {_key, nil} -> false
       _ -> true
     end)
     |> Enum.into(%{})

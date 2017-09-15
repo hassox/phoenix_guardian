@@ -19,7 +19,7 @@ defmodule PhoenixGuardian do
 
   def children(env) when env != "test" do
     import Supervisor.Spec, warn: false
-    children ++ [worker(GuardianDb.ExpiredSweeper, [])]
+    children() ++ [worker(GuardianDb.ExpiredSweeper, [])]
   end
 
   def children do
