@@ -11,7 +11,7 @@ config :phoenix_guardian, PhoenixGuardianWeb.Endpoint,
   root: Path.dirname(__DIR__),
   secret_key_base: "m6b9EGgoTxATviy/Ujx2stZC8UXkw2MMXACAXQR1btpZtV+FtQfl9kL7WoU5mvrD",
   render_errors: [accepts: ~w(html json)],
-  pubsub: [name: PhoenixGuardian.PubSub,
+  pubsub: [name: PhoenixGuardianWeb.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
@@ -56,17 +56,13 @@ config :ueberauth, Ueberauth.Strategy.Github.OAuth,
 
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
-  client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
-
-  # Optional add redirect_uri
-  # redirect_uri: "http://lvh.me:4000/auth/google/callback"
+  client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
+  redirect_uri: "http://localhost:4000/auth/google/callback"
 
 config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
   client_id: System.get_env("FACEBOOK_CLIENT_ID"),
-  client_secret: System.get_env("FACEBOOK_CLIENT_SECRET")
-
-  # Optional add redirect_uri
-  # redirect_uri: "http://lvh.me:4000/auth/facebook/callback"
+  client_secret: System.get_env("FACEBOOK_CLIENT_SECRET"),
+  redirect_uri: "http://lvh.me:4000/auth/facebook/callback"
 
 config :guardian_db, GuardianDb,
   repo: PhoenixGuardian.Repo,

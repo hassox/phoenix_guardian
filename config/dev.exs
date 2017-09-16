@@ -12,7 +12,8 @@ config :phoenix_guardian, PhoenixGuardianWeb.Endpoint,
   code_reloader: true,
   cache_static_lookup: false,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin"]]
+  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+                    cd: Path.expand("../assets", __DIR__)]]
 
 # Watch static and templates for browser reloading.
 config :phoenix_guardian, PhoenixGuardianWeb.Endpoint,
