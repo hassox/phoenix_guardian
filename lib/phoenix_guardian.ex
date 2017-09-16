@@ -13,7 +13,7 @@ defmodule PhoenixGuardian do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    PhoenixGuardian.Endpoint.config_change(changed, removed)
+    PhoenixGuardianWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 
@@ -27,7 +27,7 @@ defmodule PhoenixGuardian do
 
     [
       # Start the endpoint when the application starts
-      supervisor(PhoenixGuardian.Endpoint, []),
+      supervisor(PhoenixGuardianWeb.Endpoint, []),
       # Start the Ecto repository
       worker(PhoenixGuardian.Repo, []),
 

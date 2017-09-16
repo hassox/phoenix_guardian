@@ -6,7 +6,7 @@ defmodule PhoenixGuardian.UserFromAuthTest do
   alias PhoenixGuardian.Repo
   alias PhoenixGuardian.User
   alias PhoenixGuardian.Authorization
-  alias PhoenixGuardian.UserFromAuth
+  alias PhoenixGuardianWeb.UserFromAuth
   alias Ueberauth.Auth
   alias Ueberauth.Auth.Credentials
   alias Ueberauth.Auth.Info

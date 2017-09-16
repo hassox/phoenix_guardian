@@ -1,7 +1,7 @@
 defmodule PhoenixGuardian.AuthorizedChannelTest do
   use PhoenixGuardian.ChannelCase
 
-  alias PhoenixGuardian.AuthorizedChannel
+  alias PhoenixGuardianWeb.AuthorizedChannel
   import PhoenixGuardian.Factory
 
   setup do

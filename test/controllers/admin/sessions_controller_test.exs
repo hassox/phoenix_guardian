@@ -33,7 +33,7 @@ defmodule PhoenixGuardian.SessionControllerTest do
 
   test "DELETE logout when logged in", %{user: user} do
     conn = guardian_login(user, :token, key: :admin)
-      |> bypass_through(PhoenixGuardian.Router, [:browser, :admin_browser_auth])
+      |> bypass_through(PhoenixGuardianWeb.Router, [:browser, :admin_browser_auth])
       |> get("/")
 
     refute Guardian.Plug.current_resource(conn, :admin) == nil

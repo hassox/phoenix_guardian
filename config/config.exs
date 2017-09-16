@@ -6,7 +6,7 @@
 use Mix.Config
 
 # Configures the endpoint
-config :phoenix_guardian, PhoenixGuardian.Endpoint,
+config :phoenix_guardian, PhoenixGuardianWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "m6b9EGgoTxATviy/Ujx2stZC8UXkw2MMXACAXQR1btpZtV+FtQfl9kL7WoU5mvrD",
@@ -30,7 +30,7 @@ config :guardian, Guardian,
   issuer: "PhoenixGuardian.#{Mix.env}",
   ttl: {30, :days},
   verify_issuer: true,
-  serializer: PhoenixGuardian.GuardianSerializer,
+  serializer: PhoenixGuardianWeb.GuardianSerializer,
   secret_key: to_string(Mix.env),
   hooks: GuardianDb,
   permissions: %{
