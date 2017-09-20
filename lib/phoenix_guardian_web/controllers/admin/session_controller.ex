@@ -7,7 +7,8 @@ defmodule PhoenixGuardianWeb.Admin.SessionController do
   """
   use PhoenixGuardianWeb, :admin_controller
 
-  alias PhoenixGuardianWeb.{UserFromAuth, User}
+  alias PhoenixGuardianWeb.UserFromAuth
+  alias PhoenixGuardian.User
 
   # We still want to use Ueberauth for checking the passwords etc
   # we have everything we need to check email / passwords and oauth already
