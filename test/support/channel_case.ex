@@ -27,7 +27,7 @@ defmodule PhoenixGuardian.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint PhoenixGuardian.Endpoint
+      @endpoint PhoenixGuardianWeb.Endpoint
     end
   end
 

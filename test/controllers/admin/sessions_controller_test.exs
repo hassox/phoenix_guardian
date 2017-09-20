@@ -6,34 +6,58 @@ defmodule PhoenixGuardian.SessionControllerTest do
   alias PhoenixGuardian.User
 
   setup do
-    auth = create(:user)|> User.make_admin! |> with_authorization
+    auth = insert(:user) |> User.make_admin! |> with_authorization
     {:ok, %{user: auth.user}}
   end
 
-  test "/GET login when not logged in as admin" do
-    conn = conn()
+  test "GET /login when not logged in as admin" do
+    conn = build_conn()
     conn = get conn, admin_login_path(conn, :new)
     assert html_response(conn, 200)
   end
 
-  test "/GET login when logged in as a normal user", %{user: user} do
+  test "GET /login when logged in as a normal user", %{user: user} do
     conn = guardian_login(user)
     conn = get conn, admin_login_path(conn, :new)
     assert html_response(conn, 200)
   end
 
-  test "/POST login when not logged in", %{user: user} do
-    conn = conn()
-    |> post(admin_session_path(conn, :callback, "identity"), email: user.email, password: "sekrit")
+  test "POST /login when not logged in", %{user: user} do
+    conn = build_conn()
+    conn = conn |> post(admin_session_path(conn, :callback, "identity"), email: user.email, password: "sekrit")
 
     assert html_response(conn, 302)
     assert Guardian.Plug.current_resource(conn, :admin).id == user.id
     assert Guardian.Plug.current_resource(conn) == nil
   end
 
-  test "DELETE logout when logged in", %{user: user} do
+  test "POST /impersonate/:user_id", %{user: admin} do
+    other_user = insert :user
+    conn = guardian_login admin, :token, key: :admin
+    conn = post conn, admin_impersonation_path(conn, :impersonate, other_user.id)
+
+    assert redirected_to(conn) == "/"
+    assert Guardian.Plug.current_resource(conn, :admin).id == admin.id
+    assert Guardian.Plug.current_resource(conn).id == other_user.id
+  end
+
+  test "DELETE /impersonate", %{user: admin} do
+    other_user = insert(:user)
+    conn = build_conn()
+    conn =
+      conn
+      |> guardian_login(admin, :token, key: :admin)
+      |> guardian_login(other_user)
+      |> delete(admin_session_path(conn, :stop_impersonating))
+
+    refute Guardian.Plug.current_resource(conn)
+    assert Guardian.Plug.current_resource(conn, :admin).id == admin.id
+    assert redirected_to(conn) == admin_user_path(conn, :index)
+  end    
+
+  test "DELETE /logout when logged in", %{user: user} do
     conn = guardian_login(user, :token, key: :admin)
-      |> bypass_through(PhoenixGuardian.Router, [:browser, :admin_browser_auth])
+      |> bypass_through(PhoenixGuardianWeb.Router, [:browser, :admin_browser_auth])
       |> get("/")
 
     refute Guardian.Plug.current_resource(conn, :admin) == nil

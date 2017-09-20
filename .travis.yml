@@ -1,13 +1,14 @@
 sudo: false
 language: elixir
 elixir:
-  - 1.2.1
+  - 1.5.1
 otp_release:
-  - 18.2
+  - 20.0
 env:
   - MIX_ENV=test
 install:
   - rm -rf _build
+  - mix local.rebar --force
   - mix local.hex --force
   - mix deps.get
 script:

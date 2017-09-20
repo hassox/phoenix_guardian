@@ -24,23 +24,23 @@ defmodule PhoenixGuardian.ConnCase do
       import Ecto.Schema
       import Ecto.Query, only: [from: 2]
 
-      import PhoenixGuardian.Router.Helpers
+      import PhoenixGuardianWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint PhoenixGuardian.Endpoint
+      @endpoint PhoenixGuardianWeb.Endpoint
 
       # We need a way to get into the connection to login a user
       # We need to use the bypass_through to fire the plugs in the router
       # and get the session fetched.
-      def guardian_login(%PhoenixGuardian.User{} = user), do: guardian_login(conn(), user, :token, [])
-      def guardian_login(%PhoenixGuardian.User{} = user, token), do: guardian_login(conn(), user, token, [])
-      def guardian_login(%PhoenixGuardian.User{} = user, token, opts), do: guardian_login(conn(), user, token, opts)
+      def guardian_login(%PhoenixGuardian.User{} = user), do: guardian_login(build_conn(), user, :token, [])
+      def guardian_login(%PhoenixGuardian.User{} = user, token), do: guardian_login(build_conn(), user, token, [])
+      def guardian_login(%PhoenixGuardian.User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
 
       def guardian_login(%Plug.Conn{} = conn, user), do: guardian_login(conn, user, :token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token), do: guardian_login(conn, user, token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token, opts) do
         conn
-          |> bypass_through(PhoenixGuardian.Router, [:browser])
+          |> bypass_through(PhoenixGuardianWeb.Router, [:browser])
           |> get("/")
           |> Guardian.Plug.sign_in(user, token, opts)
           |> send_resp(200, "Flush the session yo")
@@ -57,6 +57,6 @@ defmodule PhoenixGuardian.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(PhoenixGuardian.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
